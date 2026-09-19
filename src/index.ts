@@ -6,6 +6,7 @@ export { isValidCoordinate } from './coordinate.js'
 export type { GridOrientation } from './orientation.js'
 
 export {
-  getXDominatedNeighbours,
-  getYDominatedNeighbours
-} from './neighbours.js'
+    getXDominatedNeighbours,
+    getYDominatedNeighbours,
+    getNeighbours
+  } from './neighbours.js'

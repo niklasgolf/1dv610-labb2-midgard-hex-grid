@@ -1,4 +1,5 @@
 import type { Coordinate } from './coordinate.js'
+import type { GridOrientation } from './orientation.js'
 
 /**
  * Returns the six neighbouring coordinates in an x-dominated hex grid.
@@ -103,3 +104,24 @@ export function getYDominatedNeighbours(
     lowerRight
   ]
 }
+
+/**
+ * Returns the six neighbouring coordinates for the selected grid orientation.
+ *
+ * The orientation determines whether straight movement is horizontal
+ * or vertical.
+ *
+ * @param coordinate - The coordinate whose neighbours should be found.
+ * @param orientation - The orientation of the hex grid.
+ * @returns The six neighbouring coordinates.
+ */
+export function getNeighbours(
+    coordinate: Coordinate,
+    orientation: GridOrientation
+  ): Coordinate[] {
+    if (orientation === 'x-dominated') {
+      return getXDominatedNeighbours(coordinate)
+    }
+  
+    return getYDominatedNeighbours(coordinate)
+  }
