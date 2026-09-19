@@ -14,47 +14,49 @@ export type Point = {
 /**
  * Calculates the six corner points of an x-dominated hexagon.
  *
- * An x-dominated hexagon has a corner at the top and bottom.
+ * The width represents the complete horizontal width
+ * of the hexagon.
  *
  * @param center - The center point of the hexagon.
- * @param size - The distance from the center to each corner.
+ * @param width - The complete width of the hexagon.
  * @returns The six corner points of the hexagon.
  */
 export function getXDominatedHexagonPoints(
   center: Point,
-  size: number
+  width: number
 ): Point[] {
-  const halfWidth = Math.sqrt(3) * size / 2
-  const halfHeight = size / 2
+  const halfWidth = width / 2
+  const radius = width / Math.sqrt(3)
+  const halfRadius = radius / 2
 
   const top: Point = {
     x: center.x,
-    y: center.y - size
+    y: center.y - radius
   }
 
   const upperRight: Point = {
     x: center.x + halfWidth,
-    y: center.y - halfHeight
+    y: center.y - halfRadius
   }
 
   const lowerRight: Point = {
     x: center.x + halfWidth,
-    y: center.y + halfHeight
+    y: center.y + halfRadius
   }
 
   const bottom: Point = {
     x: center.x,
-    y: center.y + size
+    y: center.y + radius
   }
 
   const lowerLeft: Point = {
     x: center.x - halfWidth,
-    y: center.y + halfHeight
+    y: center.y + halfRadius
   }
 
   const upperLeft: Point = {
     x: center.x - halfWidth,
-    y: center.y - halfHeight
+    y: center.y - halfRadius
   }
 
   return [
@@ -70,46 +72,48 @@ export function getXDominatedHexagonPoints(
 /**
  * Calculates the six corner points of a y-dominated hexagon.
  *
- * A y-dominated hexagon has a corner at the left and right.
+ * The height represents the complete vertical height
+ * of the hexagon.
  *
  * @param center - The center point of the hexagon.
- * @param size - The distance from the center to each corner.
+ * @param height - The complete height of the hexagon.
  * @returns The six corner points of the hexagon.
  */
 export function getYDominatedHexagonPoints(
   center: Point,
-  size: number
+  height: number
 ): Point[] {
-  const halfWidth = size / 2
-  const halfHeight = Math.sqrt(3) * size / 2
+  const halfHeight = height / 2
+  const radius = height / Math.sqrt(3)
+  const halfRadius = radius / 2
 
   const upperLeft: Point = {
-    x: center.x - halfWidth,
+    x: center.x - halfRadius,
     y: center.y - halfHeight
   }
 
   const upperRight: Point = {
-    x: center.x + halfWidth,
+    x: center.x + halfRadius,
     y: center.y - halfHeight
   }
 
   const right: Point = {
-    x: center.x + size,
+    x: center.x + radius,
     y: center.y
   }
 
   const lowerRight: Point = {
-    x: center.x + halfWidth,
+    x: center.x + halfRadius,
     y: center.y + halfHeight
   }
 
   const lowerLeft: Point = {
-    x: center.x - halfWidth,
+    x: center.x - halfRadius,
     y: center.y + halfHeight
   }
 
   const left: Point = {
-    x: center.x - size,
+    x: center.x - radius,
     y: center.y
   }
 
@@ -127,19 +131,22 @@ export function getYDominatedHexagonPoints(
  * Calculates the six corner points of a hexagon
  * for the selected grid orientation.
  *
+ * For an x-dominated grid, dimension represents the width.
+ * For a y-dominated grid, dimension represents the height.
+ *
  * @param center - The center point of the hexagon.
- * @param size - The distance from the center to each corner.
+ * @param dimension - The width or height, depending on orientation.
  * @param orientation - The orientation of the hex grid.
  * @returns The six corner points of the hexagon.
  */
 export function getHexagonPoints(
   center: Point,
-  size: number,
+  dimension: number,
   orientation: GridOrientation
 ): Point[] {
   if (orientation === 'x-dominated') {
-    return getXDominatedHexagonPoints(center, size)
+    return getXDominatedHexagonPoints(center, dimension)
   }
 
-  return getYDominatedHexagonPoints(center, size)
+  return getYDominatedHexagonPoints(center, dimension)
 }

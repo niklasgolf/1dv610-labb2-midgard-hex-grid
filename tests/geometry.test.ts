@@ -12,28 +12,24 @@ describe('getXDominatedHexagonPoints', () => {
       y: 100
     }
 
-    const points = getXDominatedHexagonPoints(center, 40)
+    const points = getXDominatedHexagonPoints(center, 100)
 
     expect(points).toHaveLength(6)
   })
 
-  it('has a top and bottom corner', () => {
+  it('uses the given width as the complete hexagon width', () => {
     const center = {
       x: 100,
       y: 100
     }
 
-    const points = getXDominatedHexagonPoints(center, 40)
+    const points = getXDominatedHexagonPoints(center, 100)
 
-    expect(points[0]).toEqual({
-      x: 100,
-      y: 60
-    })
+    const upperRight = points[1]
+    const upperLeft = points[5]
 
-    expect(points[3]).toEqual({
-      x: 100,
-      y: 140
-    })
+    expect(upperRight?.x).toBe(150)
+    expect(upperLeft?.x).toBe(50)
   })
 })
 
@@ -44,58 +40,57 @@ describe('getYDominatedHexagonPoints', () => {
       y: 100
     }
 
-    const points = getYDominatedHexagonPoints(center, 40)
+    const points = getYDominatedHexagonPoints(center, 100)
 
     expect(points).toHaveLength(6)
   })
 
-  it('has a left and right corner', () => {
+  it('uses the given height as the complete hexagon height', () => {
     const center = {
       x: 100,
       y: 100
     }
 
-    const points = getYDominatedHexagonPoints(center, 40)
+    const points = getYDominatedHexagonPoints(center, 100)
 
-    expect(points[2]).toEqual({
-      x: 140,
-      y: 100
-    })
+    const upperLeft = points[0]
+    const lowerLeft = points[4]
 
-    expect(points[5]).toEqual({
-      x: 60,
-      y: 100
-    })
+    expect(upperLeft?.y).toBe(50)
+    expect(lowerLeft?.y).toBe(150)
   })
 })
 
 describe('getHexagonPoints', () => {
-  it('uses the selected grid orientation', () => {
+  it('uses width for an x-dominated grid', () => {
     const center = {
       x: 100,
       y: 100
     }
 
-    const xPoints = getHexagonPoints(
+    const points = getHexagonPoints(
       center,
-      40,
+      100,
       'x-dominated'
     )
 
-    const yPoints = getHexagonPoints(
+    expect(points[1]?.x).toBe(150)
+    expect(points[5]?.x).toBe(50)
+  })
+
+  it('uses height for a y-dominated grid', () => {
+    const center = {
+      x: 100,
+      y: 100
+    }
+
+    const points = getHexagonPoints(
       center,
-      40,
+      100,
       'y-dominated'
     )
 
-    expect(xPoints[0]).toEqual({
-      x: 100,
-      y: 60
-    })
-
-    expect(yPoints[2]).toEqual({
-      x: 140,
-      y: 100
-    })
+    expect(points[0]?.y).toBe(50)
+    expect(points[4]?.y).toBe(150)
   })
 })
