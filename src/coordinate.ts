@@ -12,14 +12,21 @@ export type Coordinate = {
   /**
    * Checks whether a coordinate is valid in the Midgard hex grid system.
    *
-   * A coordinate is valid when x and y have the same parity.
+   * Both x and y must be integers.
+   * A coordinate is valid when x and y have the same parity:
+   * both are even or both are odd.
+   *
    * For example, (10, 10) and (11, 11) are valid, while
-   * (10, 11) and (11, 12) are invalid.
+   * (10, 11), (11, 12), and (10.5, 10.5) are invalid.
    *
    * @param coordinate - The coordinate to validate.
    * @returns `true` if the coordinate is valid; otherwise `false`.
    */
   export function isValidCoordinate(coordinate: Coordinate): boolean {
+    if (!Number.isInteger(coordinate.x) || !Number.isInteger(coordinate.y)) {
+      return false
+    }
+  
     const xIsEven = coordinate.x % 2 === 0
     const yIsEven = coordinate.y % 2 === 0
   
