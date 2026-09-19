@@ -1,15 +1,23 @@
 export const MIDGARD_HEX_GRID_VERSION = '1.0.0'
 
 export type { Coordinate } from './coordinate.js'
+
 export { isValidCoordinate } from './coordinate.js'
 
 export type { GridOrientation } from './orientation.js'
 
 export {
-    getXDominatedNeighbours,
-    getYDominatedNeighbours,
-    getNeighbours
-  } from './neighbours.js'
+  getXDominatedNeighbours,
+  getYDominatedNeighbours,
+  getNeighbours
+} from './neighbours.js'
 
+export type { Point } from './geometry.js'
+
+export {
+  getXDominatedHexagonPoints,
+  getYDominatedHexagonPoints,
+  getHexagonPoints
+} from './geometry.js'
 
 export { HexGrid } from './hex-grid.js'
