@@ -1,4 +1,5 @@
 import type { Coordinate } from './coordinate.js'
+import { isValidCoordinate } from './coordinate.js'
 import type { GridOrientation } from './orientation.js'
 import { getNeighbours } from './neighbours.js'
 
@@ -26,5 +27,15 @@ export class HexGrid {
    */
   getNeighbours(coordinate: Coordinate): Coordinate[] {
     return getNeighbours(coordinate, this.orientation)
+  }
+
+  /**
+   * Checks whether a coordinate is valid in the Midgard hex grid system.
+   *
+   * @param coordinate - The coordinate to validate.
+   * @returns `true` if the coordinate is valid; otherwise `false`.
+   */
+  isValidCoordinate(coordinate: Coordinate): boolean {
+    return isValidCoordinate(coordinate)
   }
 }
