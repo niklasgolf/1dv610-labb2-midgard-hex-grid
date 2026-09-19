@@ -4,3 +4,5 @@ export type { Coordinate } from './coordinate.js'
 export { isValidCoordinate } from './coordinate.js'
 
 export type { GridOrientation } from './orientation.js'
+
+export { getXDominatedNeighbours } from './neighbours.js'
