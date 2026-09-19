@@ -10,3 +10,6 @@ export {
     getYDominatedNeighbours,
     getNeighbours
   } from './neighbours.js'
+
+
+export { HexGrid } from './hex-grid.js'
