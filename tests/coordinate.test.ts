@@ -56,4 +56,26 @@ describe('isValidCoordinate', () => {
 
     expect(result).toBe(false)
   })
+
+  it('returns false when x is negative', () => {
+    const coordinate = {
+      x: -2,
+      y: 2
+    }
+
+    const result = isValidCoordinate(coordinate)
+
+    expect(result).toBe(false)
+  })
+
+  it('returns false when y is negative', () => {
+    const coordinate = {
+      x: 2,
+      y: -2
+    }
+
+    const result = isValidCoordinate(coordinate)
+
+    expect(result).toBe(false)
+  })
 })
