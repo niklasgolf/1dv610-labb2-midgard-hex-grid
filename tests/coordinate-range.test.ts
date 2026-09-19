@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
   getCoordinateRangeSkeleton,
-  getCoordinatesAround,
   isValidCoordinateRange,
   shouldFillAround
 } from '../src/coordinate-range.js'
@@ -296,49 +295,5 @@ describe('shouldFillAround', () => {
     })
 
     expect(result).toBe(true)
-  })
-})
-
-describe('getCoordinatesAround', () => {
-  it('returns the six surrounding coordinates for an x-dominated grid', () => {
-    const coordinate = {
-      x: 2,
-      y: 2
-    }
-
-    const result = getCoordinatesAround(
-      coordinate,
-      'x-dominated'
-    )
-
-    expect(result).toEqual([
-      { x: 0, y: 2 },
-      { x: 4, y: 2 },
-      { x: 1, y: 1 },
-      { x: 3, y: 1 },
-      { x: 1, y: 3 },
-      { x: 3, y: 3 }
-    ])
-  })
-
-  it('returns the six surrounding coordinates for a y-dominated grid', () => {
-    const coordinate = {
-      x: 2,
-      y: 2
-    }
-
-    const result = getCoordinatesAround(
-      coordinate,
-      'y-dominated'
-    )
-
-    expect(result).toEqual([
-      { x: 2, y: 0 },
-      { x: 2, y: 4 },
-      { x: 1, y: 1 },
-      { x: 3, y: 1 },
-      { x: 1, y: 3 },
-      { x: 3, y: 3 }
-    ])
   })
 })

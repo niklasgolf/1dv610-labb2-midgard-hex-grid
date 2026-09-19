@@ -1,6 +1,5 @@
 import type { Coordinate } from './coordinate.js'
 import type { GridOrientation } from './orientation.js'
-import { getNeighbours } from './neighbours.js'
 
 /**
  * Describes the basic rectangular skeleton of a Midgard hex grid area.
@@ -145,21 +144,4 @@ export function shouldFillAround(
   }
 
   return false
-}
-
-/**
- * Returns the coordinates surrounding one skeleton coordinate.
- *
- * The surrounding coordinates depend on the orientation
- * of the Midgard hex grid.
- *
- * @param coordinate - The skeleton coordinate.
- * @param orientation - The orientation of the grid.
- * @returns The six neighbouring coordinates.
- */
-export function getCoordinatesAround(
-  coordinate: Coordinate,
-  orientation: GridOrientation
-): Coordinate[] {
-  return getNeighbours(coordinate, orientation)
 }
