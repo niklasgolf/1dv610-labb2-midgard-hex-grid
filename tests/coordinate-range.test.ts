@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   getCoordinateRangeSkeleton,
+  getCoordinatesAround,
   isValidCoordinateRange,
   shouldFillAround
 } from '../src/coordinate-range.js'
@@ -13,7 +14,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -28,7 +30,8 @@ describe('isValidCoordinateRange', () => {
         y: 14
       },
       xWidth: 3,
-      yHeight: 2
+      yHeight: 2,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -43,7 +46,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -58,7 +62,8 @@ describe('isValidCoordinateRange', () => {
         y: 0
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -73,7 +78,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -88,7 +94,8 @@ describe('isValidCoordinateRange', () => {
         y: 3
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -103,7 +110,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 1.5,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -118,7 +126,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1.5
+      yHeight: 1.5,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -133,7 +142,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 0,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -148,7 +158,8 @@ describe('isValidCoordinateRange', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 0
+      yHeight: 0,
+      orientation: 'x-dominated' as const
     }
 
     const result = isValidCoordinateRange(range)
@@ -165,7 +176,8 @@ describe('getCoordinateRangeSkeleton', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = getCoordinateRangeSkeleton(range)
@@ -182,7 +194,8 @@ describe('getCoordinateRangeSkeleton', () => {
         y: 10
       },
       xWidth: 3,
-      yHeight: 2
+      yHeight: 2,
+      orientation: 'x-dominated' as const
     }
 
     const result = getCoordinateRangeSkeleton(range)
@@ -206,7 +219,8 @@ describe('shouldFillAround', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = shouldFillAround(range)
@@ -221,7 +235,8 @@ describe('shouldFillAround', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = shouldFillAround(range, {
@@ -238,7 +253,8 @@ describe('shouldFillAround', () => {
         y: 2
       },
       xWidth: 1,
-      yHeight: 1
+      yHeight: 1,
+      orientation: 'x-dominated' as const
     }
 
     const result = shouldFillAround(range, {
@@ -255,7 +271,8 @@ describe('shouldFillAround', () => {
         y: 10
       },
       xWidth: 3,
-      yHeight: 2
+      yHeight: 2,
+      orientation: 'x-dominated' as const
     }
 
     const result = shouldFillAround(range)
@@ -270,7 +287,8 @@ describe('shouldFillAround', () => {
         y: 10
       },
       xWidth: 3,
-      yHeight: 2
+      yHeight: 2,
+      orientation: 'x-dominated' as const
     }
 
     const result = shouldFillAround(range, {
@@ -278,5 +296,49 @@ describe('shouldFillAround', () => {
     })
 
     expect(result).toBe(true)
+  })
+})
+
+describe('getCoordinatesAround', () => {
+  it('returns the six surrounding coordinates for an x-dominated grid', () => {
+    const coordinate = {
+      x: 2,
+      y: 2
+    }
+
+    const result = getCoordinatesAround(
+      coordinate,
+      'x-dominated'
+    )
+
+    expect(result).toEqual([
+      { x: 0, y: 2 },
+      { x: 4, y: 2 },
+      { x: 1, y: 1 },
+      { x: 3, y: 1 },
+      { x: 1, y: 3 },
+      { x: 3, y: 3 }
+    ])
+  })
+
+  it('returns the six surrounding coordinates for a y-dominated grid', () => {
+    const coordinate = {
+      x: 2,
+      y: 2
+    }
+
+    const result = getCoordinatesAround(
+      coordinate,
+      'y-dominated'
+    )
+
+    expect(result).toEqual([
+      { x: 2, y: 0 },
+      { x: 2, y: 4 },
+      { x: 1, y: 1 },
+      { x: 3, y: 1 },
+      { x: 1, y: 3 },
+      { x: 3, y: 3 }
+    ])
   })
 })

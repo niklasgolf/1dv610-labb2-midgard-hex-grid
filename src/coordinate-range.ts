@@ -1,4 +1,6 @@
 import type { Coordinate } from './coordinate.js'
+import type { GridOrientation } from './orientation.js'
+import { getNeighbours } from './neighbours.js'
 
 /**
  * Describes the basic rectangular skeleton of a Midgard hex grid area.
@@ -6,11 +8,15 @@ import type { Coordinate } from './coordinate.js'
  * The top-left corner is the first coordinate in the skeleton.
  * The x width and y height describe the number of skeleton
  * coordinates in each direction.
+ *
+ * The orientation determines how the surrounding coordinates
+ * will be generated when the skeleton is filled around.
  */
 export type CoordinateRange = {
   topLeftCorner: Coordinate
   xWidth: number
   yHeight: number
+  orientation: GridOrientation
 }
 
 /**
@@ -139,4 +145,21 @@ export function shouldFillAround(
   }
 
   return false
+}
+
+/**
+ * Returns the coordinates surrounding one skeleton coordinate.
+ *
+ * The surrounding coordinates depend on the orientation
+ * of the Midgard hex grid.
+ *
+ * @param coordinate - The skeleton coordinate.
+ * @param orientation - The orientation of the grid.
+ * @returns The six neighbouring coordinates.
+ */
+export function getCoordinatesAround(
+  coordinate: Coordinate,
+  orientation: GridOrientation
+): Coordinate[] {
+  return getNeighbours(coordinate, orientation)
 }
