@@ -13,9 +13,7 @@ export {
 export type { Point } from './geometry.js'
 
 export {
-  getXDominatedHexagonPoints,
-  getYDominatedHexagonPoints,
-  getHexagonPoints
+  HexagonGeometry
 } from './geometry.js'
 
 export type {

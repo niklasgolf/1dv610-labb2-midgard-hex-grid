@@ -1,4 +1,5 @@
 import type { Coordinate } from './coordinate.js'
+
 import { isValidCoordinate } from './coordinate.js'
 
 import type { GridOrientation } from './orientation.js'
@@ -6,7 +7,8 @@ import type { GridOrientation } from './orientation.js'
 import { NeighbourCalculator } from './neighbours.js'
 
 import type { Point } from './geometry.js'
-import { getHexagonPoints } from './geometry.js'
+
+import { HexagonGeometry } from './geometry.js'
 
 import {
   CoordinateRange
@@ -91,10 +93,12 @@ export class HexGrid {
     center: Point,
     size: number
   ): Point[] {
-    return getHexagonPoints(
+    const geometry =
+      new HexagonGeometry(this.orientation)
+
+    return geometry.getHexagonPoints(
       center,
-      size,
-      this.orientation
+      size
     )
   }
 
