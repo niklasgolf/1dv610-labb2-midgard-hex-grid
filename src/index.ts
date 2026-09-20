@@ -1,7 +1,6 @@
 export const MIDGARD_HEX_GRID_VERSION = '1.0.0'
 
 export type { Coordinate } from './coordinate.js'
-
 export { isValidCoordinate } from './coordinate.js'
 
 export type { GridOrientation } from './orientation.js'
@@ -20,4 +19,30 @@ export {
   getHexagonPoints
 } from './geometry.js'
 
+export type {
+  CoordinateRange,
+  CoordinateRangeOptions
+} from './coordinate-range.js'
+
+export {
+  isValidCoordinateRange,
+  getCoordinateRangeSkeleton,
+  shouldFillAround
+} from './coordinate-range.js'
+
+export {
+  getCoordinatesAround,
+  getCoordinateRange
+} from './coordinate-range-fill.js'
+
+export type {
+  LayeredCoordinate
+} from './coordinate-layer.js'
+
+export {
+  sortCoordinates,
+  getLayeredCoordinates
+} from './coordinate-layer.js'
+
+export type { HexGridRange } from './hex-grid.js'
 export { HexGrid } from './hex-grid.js'

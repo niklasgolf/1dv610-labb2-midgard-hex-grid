@@ -67,4 +67,96 @@ describe('HexGrid', () => {
 
     expect(result).toBe(false)
   })
+
+  it('creates a coordinate range using the grid orientation', () => {
+    const grid = new HexGrid('x-dominated')
+
+    const range = {
+      topLeftCorner: {
+        x: 2,
+        y: 2
+      },
+      xWidth: 1,
+      yHeight: 1
+    }
+
+    const result = grid.getCoordinateRange(
+      range,
+      {
+        fillAround: true
+      }
+    )
+
+    expect(result).toEqual([
+      { x: 2, y: 2 },
+      { x: 0, y: 2 },
+      { x: 4, y: 2 },
+      { x: 1, y: 1 },
+      { x: 3, y: 1 },
+      { x: 1, y: 3 },
+      { x: 3, y: 3 }
+    ])
+  })
+
+  it('creates a y-dominated coordinate range using the grid orientation', () => {
+    const grid = new HexGrid('y-dominated')
+
+    const range = {
+      topLeftCorner: {
+        x: 2,
+        y: 2
+      },
+      xWidth: 1,
+      yHeight: 1
+    }
+
+    const result = grid.getCoordinateRange(
+      range,
+      {
+        fillAround: true
+      }
+    )
+
+    expect(result).toEqual([
+      { x: 2, y: 2 },
+      { x: 2, y: 0 },
+      { x: 2, y: 4 },
+      { x: 1, y: 1 },
+      { x: 3, y: 1 },
+      { x: 1, y: 3 },
+      { x: 3, y: 3 }
+    ])
+  })
+
+  it('creates a layered coordinate range with z-index values', () => {
+    const grid = new HexGrid('x-dominated')
+
+    const range = {
+      topLeftCorner: {
+        x: 2,
+        y: 2
+      },
+      xWidth: 1,
+      yHeight: 1
+    }
+
+    const result = grid.getLayeredCoordinateRange(
+      range,
+      {
+        fillAround: true
+      }
+    )
+
+    expect(result).toEqual([
+      { x: 1, y: 1, zIndex: 100 },
+      { x: 3, y: 1, zIndex: 100 },
+
+      { x: 0, y: 2, zIndex: 200 },
+      { x: 2, y: 2, zIndex: 200 },
+      { x: 4, y: 2, zIndex: 200 },
+
+      { x: 1, y: 3, zIndex: 300 },
+      { x: 3, y: 3, zIndex: 300 }
+    ])
+  })
 })
