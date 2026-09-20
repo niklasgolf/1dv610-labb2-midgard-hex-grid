@@ -21,12 +21,12 @@ import {
   getCoordinateRange
 } from './coordinate-range-fill.js'
 
-import type {
-  LayeredCoordinate
+import {
+  CoordinateLayer
 } from './coordinate-layer.js'
 
-import {
-  getLayeredCoordinates
+import type {
+  LayeredCoordinate
 } from './coordinate-layer.js'
 
 /**
@@ -141,6 +141,10 @@ export class HexGrid {
       options
     )
 
-    return getLayeredCoordinates(coordinates)
+    const coordinateLayer = new CoordinateLayer(
+      coordinates
+    )
+
+    return coordinateLayer.getLayeredCoordinates()
   }
 }

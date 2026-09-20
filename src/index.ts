@@ -39,8 +39,7 @@ export type {
 } from './coordinate-layer.js'
 
 export {
-  sortCoordinates,
-  getLayeredCoordinates
+  CoordinateLayer
 } from './coordinate-layer.js'
 
 export type { HexGridRange } from './hex-grid.js'
