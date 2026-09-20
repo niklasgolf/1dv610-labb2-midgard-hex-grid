@@ -26,8 +26,7 @@ export {
 } from './coordinate-range.js'
 
 export {
-  getCoordinatesAround,
-  getCoordinateRange
+  CoordinateRangeFiller
 } from './coordinate-range-fill.js'
 
 export type {

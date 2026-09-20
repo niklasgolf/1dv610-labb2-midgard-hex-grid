@@ -20,7 +20,7 @@ import type {
 } from './coordinate-range.js'
 
 import {
-  getCoordinateRange
+  CoordinateRangeFiller
 } from './coordinate-range-fill.js'
 
 import {
@@ -119,8 +119,10 @@ export class HexGrid {
       orientation: this.orientation
     })
 
-    return getCoordinateRange(
-      coordinateRange,
+    const coordinateRangeFiller =
+      new CoordinateRangeFiller(coordinateRange)
+
+    return coordinateRangeFiller.getCoordinateRange(
       options
     )
   }
