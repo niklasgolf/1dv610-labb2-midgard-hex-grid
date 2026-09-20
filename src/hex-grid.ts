@@ -8,8 +8,12 @@ import { getNeighbours } from './neighbours.js'
 import type { Point } from './geometry.js'
 import { getHexagonPoints } from './geometry.js'
 
+import {
+  CoordinateRange
+} from './coordinate-range.js'
+
 import type {
-  CoordinateRange,
+  CoordinateRangeConfig,
   CoordinateRangeOptions
 } from './coordinate-range.js'
 
@@ -31,7 +35,10 @@ import {
  * The orientation is not included because the HexGrid instance
  * already has its own orientation.
  */
-export type HexGridRange = Omit<CoordinateRange, 'orientation'>
+export type HexGridRange = Omit<
+  CoordinateRangeConfig,
+  'orientation'
+>
 
 /**
  * Represents a Midgard hex grid with a specific orientation.
@@ -56,7 +63,10 @@ export class HexGrid {
    * @returns The six neighbouring coordinates.
    */
   getNeighbours(coordinate: Coordinate): Coordinate[] {
-    return getNeighbours(coordinate, this.orientation)
+    return getNeighbours(
+      coordinate,
+      this.orientation
+    )
   }
 
   /**
@@ -100,10 +110,10 @@ export class HexGrid {
     range: HexGridRange,
     options: CoordinateRangeOptions = {}
   ): Coordinate[] {
-    const coordinateRange: CoordinateRange = {
+    const coordinateRange = new CoordinateRange({
       ...range,
       orientation: this.orientation
-    }
+    })
 
     return getCoordinateRange(
       coordinateRange,

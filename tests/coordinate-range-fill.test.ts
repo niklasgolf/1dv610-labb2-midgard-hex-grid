@@ -1,4 +1,7 @@
 import { describe, expect, it } from 'vitest'
+
+import { CoordinateRange } from '../src/coordinate-range.js'
+
 import {
   getCoordinateRange,
   getCoordinatesAround
@@ -50,15 +53,15 @@ describe('getCoordinatesAround', () => {
 
 describe('getCoordinateRange', () => {
   it('returns only the skeleton for a 1 by 1 range without fillAround', () => {
-    const range = {
+    const range = new CoordinateRange({
       topLeftCorner: {
         x: 2,
         y: 2
       },
       xWidth: 1,
       yHeight: 1,
-      orientation: 'x-dominated' as const
-    }
+      orientation: 'x-dominated'
+    })
 
     const result = getCoordinateRange(range)
 
@@ -68,15 +71,15 @@ describe('getCoordinateRange', () => {
   })
 
   it('fills around a 1 by 1 range when fillAround is true', () => {
-    const range = {
+    const range = new CoordinateRange({
       topLeftCorner: {
         x: 2,
         y: 2
       },
       xWidth: 1,
       yHeight: 1,
-      orientation: 'x-dominated' as const
-    }
+      orientation: 'x-dominated'
+    })
 
     const result = getCoordinateRange(range, {
       fillAround: true
@@ -94,15 +97,15 @@ describe('getCoordinateRange', () => {
   })
 
   it('automatically fills around a larger range without duplicates', () => {
-    const range = {
+    const range = new CoordinateRange({
       topLeftCorner: {
         x: 2,
         y: 2
       },
       xWidth: 2,
       yHeight: 1,
-      orientation: 'x-dominated' as const
-    }
+      orientation: 'x-dominated'
+    })
 
     const result = getCoordinateRange(range)
 
@@ -123,15 +126,15 @@ describe('getCoordinateRange', () => {
   })
 
   it('automatically fills around a larger y-dominated range without duplicates', () => {
-    const range = {
+    const range = new CoordinateRange({
       topLeftCorner: {
         x: 2,
         y: 2
       },
       xWidth: 2,
       yHeight: 1,
-      orientation: 'y-dominated' as const
-    }
+      orientation: 'y-dominated'
+    })
 
     const result = getCoordinateRange(range)
 

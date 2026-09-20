@@ -1,13 +1,14 @@
 import type { Coordinate } from './coordinate.js'
 import type { GridOrientation } from './orientation.js'
+
 import { getNeighbours } from './neighbours.js'
-import {
-  getCoordinateRangeSkeleton,
-  shouldFillAround
-} from './coordinate-range.js'
+
 import type {
-  CoordinateRange,
   CoordinateRangeOptions
+} from './coordinate-range.js'
+
+import {
+  CoordinateRange
 } from './coordinate-range.js'
 
 /**
@@ -67,9 +68,9 @@ export function getCoordinateRange(
   range: CoordinateRange,
   options: CoordinateRangeOptions = {}
 ): Coordinate[] {
-  const skeleton = getCoordinateRangeSkeleton(range)
+  const skeleton = range.getSkeleton()
 
-  if (!shouldFillAround(range, options)) {
+  if (!range.shouldFillAround(options)) {
     return skeleton
   }
 
