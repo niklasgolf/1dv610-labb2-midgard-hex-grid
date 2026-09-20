@@ -1,14 +1,20 @@
 import { describe, expect, it } from 'vitest'
-import { isValidCoordinate } from '../src/coordinate.js'
 
-describe('isValidCoordinate', () => {
+import {
+  CoordinateValidator
+} from '../src/coordinate.js'
+
+describe('CoordinateValidator', () => {
   it('returns true when x and y are both even', () => {
     const coordinate = {
       x: 10,
       y: 10
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(true)
   })
@@ -19,7 +25,10 @@ describe('isValidCoordinate', () => {
       y: 11
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(true)
   })
@@ -30,7 +39,10 @@ describe('isValidCoordinate', () => {
       y: 11
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(false)
   })
@@ -41,7 +53,10 @@ describe('isValidCoordinate', () => {
       y: 12
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(false)
   })
@@ -52,7 +67,10 @@ describe('isValidCoordinate', () => {
       y: 10.5
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(false)
   })
@@ -63,7 +81,10 @@ describe('isValidCoordinate', () => {
       y: 2
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(false)
   })
@@ -74,7 +95,10 @@ describe('isValidCoordinate', () => {
       y: -2
     }
 
-    const result = isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    const result =
+      validator.isValidCoordinate(coordinate)
 
     expect(result).toBe(false)
   })

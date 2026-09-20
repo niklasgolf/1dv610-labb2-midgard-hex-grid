@@ -1,6 +1,6 @@
 import type { Coordinate } from './coordinate.js'
 
-import { isValidCoordinate } from './coordinate.js'
+import { CoordinateValidator } from './coordinate.js'
 
 import type { GridOrientation } from './orientation.js'
 
@@ -78,7 +78,9 @@ export class HexGrid {
    * @returns `true` if the coordinate is valid; otherwise `false`.
    */
   isValidCoordinate(coordinate: Coordinate): boolean {
-    return isValidCoordinate(coordinate)
+    const validator = new CoordinateValidator()
+
+    return validator.isValidCoordinate(coordinate)
   }
 
   /**
