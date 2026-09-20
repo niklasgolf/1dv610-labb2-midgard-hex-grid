@@ -3,7 +3,7 @@ import { isValidCoordinate } from './coordinate.js'
 
 import type { GridOrientation } from './orientation.js'
 
-import { getNeighbours } from './neighbours.js'
+import { NeighbourCalculator } from './neighbours.js'
 
 import type { Point } from './geometry.js'
 import { getHexagonPoints } from './geometry.js'
@@ -63,10 +63,10 @@ export class HexGrid {
    * @returns The six neighbouring coordinates.
    */
   getNeighbours(coordinate: Coordinate): Coordinate[] {
-    return getNeighbours(
-      coordinate,
-      this.orientation
-    )
+    const neighbourCalculator =
+      new NeighbourCalculator(this.orientation)
+
+    return neighbourCalculator.getNeighbours(coordinate)
   }
 
   /**

@@ -2,126 +2,143 @@ import type { Coordinate } from './coordinate.js'
 import type { GridOrientation } from './orientation.js'
 
 /**
- * Returns the six neighbouring coordinates in an x-dominated hex grid.
+ * Calculates neighbouring coordinates in a Midgard hex grid.
  *
- * Horizontal neighbours are two x-units away.
- * Diagonal neighbours are one x-unit and one y-unit away.
- *
- * @param coordinate - The coordinate whose neighbours should be found.
- * @returns The six neighbouring coordinates.
+ * The orientation determines whether straight movement
+ * between neighbouring coordinates is horizontal or vertical.
  */
-export function getXDominatedNeighbours(
-  coordinate: Coordinate
-): Coordinate[] {
-  const left: Coordinate = {
-    x: coordinate.x - 2,
-    y: coordinate.y
+export class NeighbourCalculator {
+  private readonly orientation: GridOrientation
+
+  /**
+   * Creates a new neighbour calculator.
+   *
+   * @param orientation - The orientation of the hex grid.
+   */
+  constructor(orientation: GridOrientation) {
+    this.orientation = orientation
   }
 
-  const right: Coordinate = {
-    x: coordinate.x + 2,
-    y: coordinate.y
-  }
-
-  const upperLeft: Coordinate = {
-    x: coordinate.x - 1,
-    y: coordinate.y - 1
-  }
-
-  const upperRight: Coordinate = {
-    x: coordinate.x + 1,
-    y: coordinate.y - 1
-  }
-
-  const lowerLeft: Coordinate = {
-    x: coordinate.x - 1,
-    y: coordinate.y + 1
-  }
-
-  const lowerRight: Coordinate = {
-    x: coordinate.x + 1,
-    y: coordinate.y + 1
-  }
-
-  return [
-    left,
-    right,
-    upperLeft,
-    upperRight,
-    lowerLeft,
-    lowerRight
-  ]
-}
-
-/**
- * Returns the six neighbouring coordinates in a y-dominated hex grid.
- *
- * Vertical neighbours are two y-units away.
- * Diagonal neighbours are one x-unit and one y-unit away.
- *
- * @param coordinate - The coordinate whose neighbours should be found.
- * @returns The six neighbouring coordinates.
- */
-export function getYDominatedNeighbours(
-  coordinate: Coordinate
-): Coordinate[] {
-  const upper: Coordinate = {
-    x: coordinate.x,
-    y: coordinate.y - 2
-  }
-
-  const lower: Coordinate = {
-    x: coordinate.x,
-    y: coordinate.y + 2
-  }
-
-  const upperLeft: Coordinate = {
-    x: coordinate.x - 1,
-    y: coordinate.y - 1
-  }
-
-  const upperRight: Coordinate = {
-    x: coordinate.x + 1,
-    y: coordinate.y - 1
-  }
-
-  const lowerLeft: Coordinate = {
-    x: coordinate.x - 1,
-    y: coordinate.y + 1
-  }
-
-  const lowerRight: Coordinate = {
-    x: coordinate.x + 1,
-    y: coordinate.y + 1
-  }
-
-  return [
-    upper,
-    lower,
-    upperLeft,
-    upperRight,
-    lowerLeft,
-    lowerRight
-  ]
-}
-
-/**
- * Returns the six neighbouring coordinates for the selected grid orientation.
- *
- * The orientation determines whether straight movement is horizontal
- * or vertical.
- *
- * @param coordinate - The coordinate whose neighbours should be found.
- * @param orientation - The orientation of the hex grid.
- * @returns The six neighbouring coordinates.
- */
-export function getNeighbours(
-    coordinate: Coordinate,
-    orientation: GridOrientation
+  /**
+   * Returns the six neighbouring coordinates
+   * in an x-dominated hex grid.
+   *
+   * Horizontal neighbours are two x-units away.
+   * Diagonal neighbours are one x-unit and one y-unit away.
+   *
+   * @param coordinate - The coordinate whose neighbours should be found.
+   * @returns The six neighbouring coordinates.
+   */
+  getXDominatedNeighbours(
+    coordinate: Coordinate
   ): Coordinate[] {
-    if (orientation === 'x-dominated') {
-      return getXDominatedNeighbours(coordinate)
+    const left: Coordinate = {
+      x: coordinate.x - 2,
+      y: coordinate.y
     }
-  
-    return getYDominatedNeighbours(coordinate)
+
+    const right: Coordinate = {
+      x: coordinate.x + 2,
+      y: coordinate.y
+    }
+
+    const upperLeft: Coordinate = {
+      x: coordinate.x - 1,
+      y: coordinate.y - 1
+    }
+
+    const upperRight: Coordinate = {
+      x: coordinate.x + 1,
+      y: coordinate.y - 1
+    }
+
+    const lowerLeft: Coordinate = {
+      x: coordinate.x - 1,
+      y: coordinate.y + 1
+    }
+
+    const lowerRight: Coordinate = {
+      x: coordinate.x + 1,
+      y: coordinate.y + 1
+    }
+
+    return [
+      left,
+      right,
+      upperLeft,
+      upperRight,
+      lowerLeft,
+      lowerRight
+    ]
   }
+
+  /**
+   * Returns the six neighbouring coordinates
+   * in a y-dominated hex grid.
+   *
+   * Vertical neighbours are two y-units away.
+   * Diagonal neighbours are one x-unit and one y-unit away.
+   *
+   * @param coordinate - The coordinate whose neighbours should be found.
+   * @returns The six neighbouring coordinates.
+   */
+  getYDominatedNeighbours(
+    coordinate: Coordinate
+  ): Coordinate[] {
+    const upper: Coordinate = {
+      x: coordinate.x,
+      y: coordinate.y - 2
+    }
+
+    const lower: Coordinate = {
+      x: coordinate.x,
+      y: coordinate.y + 2
+    }
+
+    const upperLeft: Coordinate = {
+      x: coordinate.x - 1,
+      y: coordinate.y - 1
+    }
+
+    const upperRight: Coordinate = {
+      x: coordinate.x + 1,
+      y: coordinate.y - 1
+    }
+
+    const lowerLeft: Coordinate = {
+      x: coordinate.x - 1,
+      y: coordinate.y + 1
+    }
+
+    const lowerRight: Coordinate = {
+      x: coordinate.x + 1,
+      y: coordinate.y + 1
+    }
+
+    return [
+      upper,
+      lower,
+      upperLeft,
+      upperRight,
+      lowerLeft,
+      lowerRight
+    ]
+  }
+
+  /**
+   * Returns the six neighbouring coordinates
+   * for this grid's orientation.
+   *
+   * @param coordinate - The coordinate whose neighbours should be found.
+   * @returns The six neighbouring coordinates.
+   */
+  getNeighbours(
+    coordinate: Coordinate
+  ): Coordinate[] {
+    if (this.orientation === 'x-dominated') {
+      return this.getXDominatedNeighbours(coordinate)
+    }
+
+    return this.getYDominatedNeighbours(coordinate)
+  }
+}

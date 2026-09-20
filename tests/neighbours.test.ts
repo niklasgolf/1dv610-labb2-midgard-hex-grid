@@ -1,112 +1,128 @@
 import { describe, expect, it } from 'vitest'
-import {
-  getXDominatedNeighbours,
-  getYDominatedNeighbours,
-  getNeighbours
-} from '../src/neighbours.js'
+import { NeighbourCalculator } from '../src/neighbours.js'
 
-describe('getXDominatedNeighbours', () => {
-  it('returns six neighbours', () => {
-    const coordinate = {
-      x: 10,
-      y: 10
-    }
+describe('NeighbourCalculator', () => {
+  describe('getXDominatedNeighbours', () => {
+    it('returns six neighbours', () => {
+      const coordinate = {
+        x: 10,
+        y: 10
+      }
 
-    const neighbours = getXDominatedNeighbours(coordinate)
+      const calculator =
+        new NeighbourCalculator('x-dominated')
 
-    expect(neighbours).toHaveLength(6)
+      const neighbours =
+        calculator.getXDominatedNeighbours(coordinate)
+
+      expect(neighbours).toHaveLength(6)
+    })
+
+    it('returns the correct neighbours', () => {
+      const coordinate = {
+        x: 10,
+        y: 10
+      }
+
+      const calculator =
+        new NeighbourCalculator('x-dominated')
+
+      const neighbours =
+        calculator.getXDominatedNeighbours(coordinate)
+
+      expect(neighbours).toEqual([
+        { x: 8, y: 10 },
+        { x: 12, y: 10 },
+        { x: 9, y: 9 },
+        { x: 11, y: 9 },
+        { x: 9, y: 11 },
+        { x: 11, y: 11 }
+      ])
+    })
   })
 
-  it('returns the correct neighbours', () => {
-    const coordinate = {
-      x: 10,
-      y: 10
-    }
+  describe('getYDominatedNeighbours', () => {
+    it('returns six neighbours', () => {
+      const coordinate = {
+        x: 10,
+        y: 10
+      }
 
-    const neighbours = getXDominatedNeighbours(coordinate)
+      const calculator =
+        new NeighbourCalculator('y-dominated')
 
-    expect(neighbours).toEqual([
-      { x: 8, y: 10 },
-      { x: 12, y: 10 },
-      { x: 9, y: 9 },
-      { x: 11, y: 9 },
-      { x: 9, y: 11 },
-      { x: 11, y: 11 }
-    ])
-  })
-})
+      const neighbours =
+        calculator.getYDominatedNeighbours(coordinate)
 
-describe('getYDominatedNeighbours', () => {
-  it('returns six neighbours', () => {
-    const coordinate = {
-      x: 10,
-      y: 10
-    }
+      expect(neighbours).toHaveLength(6)
+    })
 
-    const neighbours = getYDominatedNeighbours(coordinate)
+    it('returns the correct neighbours', () => {
+      const coordinate = {
+        x: 10,
+        y: 10
+      }
 
-    expect(neighbours).toHaveLength(6)
-  })
+      const calculator =
+        new NeighbourCalculator('y-dominated')
 
-  it('returns the correct neighbours', () => {
-    const coordinate = {
-      x: 10,
-      y: 10
-    }
+      const neighbours =
+        calculator.getYDominatedNeighbours(coordinate)
 
-    const neighbours = getYDominatedNeighbours(coordinate)
-
-    expect(neighbours).toEqual([
-      { x: 10, y: 8 },
-      { x: 10, y: 12 },
-      { x: 9, y: 9 },
-      { x: 11, y: 9 },
-      { x: 9, y: 11 },
-      { x: 11, y: 11 }
-    ])
-  })
-})
-
-describe('getNeighbours', () => {
-  it('uses x-dominated neighbour calculation', () => {
-    const coordinate = {
-      x: 10,
-      y: 10
-    }
-
-    const neighbours = getNeighbours(
-      coordinate,
-      'x-dominated'
-    )
-
-    expect(neighbours).toEqual([
-      { x: 8, y: 10 },
-      { x: 12, y: 10 },
-      { x: 9, y: 9 },
-      { x: 11, y: 9 },
-      { x: 9, y: 11 },
-      { x: 11, y: 11 }
-    ])
+      expect(neighbours).toEqual([
+        { x: 10, y: 8 },
+        { x: 10, y: 12 },
+        { x: 9, y: 9 },
+        { x: 11, y: 9 },
+        { x: 9, y: 11 },
+        { x: 11, y: 11 }
+      ])
+    })
   })
 
-  it('uses y-dominated neighbour calculation', () => {
-    const coordinate = {
-      x: 10,
-      y: 10
-    }
+  describe('getNeighbours', () => {
+    it('uses x-dominated neighbour calculation', () => {
+      const coordinate = {
+        x: 10,
+        y: 10
+      }
 
-    const neighbours = getNeighbours(
-      coordinate,
-      'y-dominated'
-    )
+      const calculator =
+        new NeighbourCalculator('x-dominated')
 
-    expect(neighbours).toEqual([
-      { x: 10, y: 8 },
-      { x: 10, y: 12 },
-      { x: 9, y: 9 },
-      { x: 11, y: 9 },
-      { x: 9, y: 11 },
-      { x: 11, y: 11 }
-    ])
+      const neighbours =
+        calculator.getNeighbours(coordinate)
+
+      expect(neighbours).toEqual([
+        { x: 8, y: 10 },
+        { x: 12, y: 10 },
+        { x: 9, y: 9 },
+        { x: 11, y: 9 },
+        { x: 9, y: 11 },
+        { x: 11, y: 11 }
+      ])
+    })
+
+    it('uses y-dominated neighbour calculation', () => {
+      const coordinate = {
+        x: 10,
+        y: 10
+      }
+
+      const calculator =
+        new NeighbourCalculator('y-dominated')
+
+      const neighbours =
+        calculator.getNeighbours(coordinate)
+
+      expect(neighbours).toEqual([
+        { x: 10, y: 8 },
+        { x: 10, y: 12 },
+        { x: 9, y: 9 },
+        { x: 11, y: 9 },
+        { x: 9, y: 11 },
+        { x: 11, y: 11 }
+      ])
+    })
   })
 })

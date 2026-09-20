@@ -1,7 +1,7 @@
 import type { Coordinate } from './coordinate.js'
 import type { GridOrientation } from './orientation.js'
 
-import { getNeighbours } from './neighbours.js'
+import { NeighbourCalculator } from './neighbours.js'
 
 import type {
   CoordinateRangeOptions
@@ -25,7 +25,10 @@ export function getCoordinatesAround(
   coordinate: Coordinate,
   orientation: GridOrientation
 ): Coordinate[] {
-  return getNeighbours(coordinate, orientation)
+  const neighbourCalculator =
+    new NeighbourCalculator(orientation)
+
+  return neighbourCalculator.getNeighbours(coordinate)
 }
 
 /**

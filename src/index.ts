@@ -7,9 +7,7 @@ export { isValidCoordinate } from './coordinate.js'
 export type { GridOrientation } from './orientation.js'
 
 export {
-  getXDominatedNeighbours,
-  getYDominatedNeighbours,
-  getNeighbours
+  NeighbourCalculator
 } from './neighbours.js'
 
 export type { Point } from './geometry.js'
