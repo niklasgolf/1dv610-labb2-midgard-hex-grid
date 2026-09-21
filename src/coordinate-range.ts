@@ -1,21 +1,24 @@
 import type { Coordinate } from './coordinate.js'
+
 import type { GridOrientation } from './orientation.js'
 
 /**
  * Describes the values needed to create a Midgard coordinate range.
+ *
+ * Width and height describe the number of skeleton hexagons.
+ * Every Midgard coordinate range starts internally at coordinate (2, 2).
  */
 export type CoordinateRangeConfig = {
-  topLeftCorner: Coordinate
-  xWidth: number
-  yHeight: number
+  width: number
+  height: number
   orientation: GridOrientation
 }
 
 /**
  * Options used when creating a Midgard coordinate range.
  *
- * fillAround is optional because it is only a meaningful choice
- * when the basic range consists of a single coordinate.
+ * fillAround is only a meaningful choice for a 1 by 1 skeleton.
+ * Larger skeletons are always filled around automatically.
  */
 export type CoordinateRangeOptions = {
   fillAround?: boolean
@@ -24,13 +27,15 @@ export type CoordinateRangeOptions = {
 /**
  * Represents a rectangular skeleton of a Midgard hex grid area.
  *
- * The range knows its starting coordinate, size and orientation,
- * and can validate itself and create its own skeleton coordinates.
+ * Every skeleton starts at Midgard coordinate (2, 2).
+ * The user only chooses the width and height of the skeleton.
  */
 export class CoordinateRange {
-  readonly topLeftCorner: Coordinate
-  readonly xWidth: number
-  readonly yHeight: number
+
+  readonly width: number
+
+  readonly height: number
+
   readonly orientation: GridOrientation
 
   /**
@@ -39,101 +44,96 @@ export class CoordinateRange {
    * @param config - The values describing the coordinate range.
    */
   constructor(config: CoordinateRangeConfig) {
-    this.topLeftCorner = config.topLeftCorner
-    this.xWidth = config.xWidth
-    this.yHeight = config.yHeight
+
+    this.width = config.width
+
+    this.height = config.height
+
     this.orientation = config.orientation
+
   }
 
   /**
-   * Checks whether this coordinate range has valid values.
+   * Checks whether this coordinate range has valid dimensions.
    *
-   * The top-left corner must be a true Midgard skeleton coordinate.
-   * Both x and y must be even and at least 2.
-   *
-   * The x width and y height describe numbers of skeleton coordinates
-   * and must therefore be positive integers.
+   * Width and height describe numbers of skeleton hexagons.
+   * Both values must therefore be positive integers.
    *
    * @returns True if this coordinate range is valid.
    */
   isValid(): boolean {
-    if (!Number.isInteger(this.topLeftCorner.x)) {
+
+    if (!Number.isInteger(this.width)) {
+
       return false
+
     }
 
-    if (!Number.isInteger(this.topLeftCorner.y)) {
+    if (!Number.isInteger(this.height)) {
+
       return false
+
     }
 
-    if (this.topLeftCorner.x < 2) {
+    if (this.width < 1) {
+
       return false
+
     }
 
-    if (this.topLeftCorner.y < 2) {
-      return false
-    }
+    if (this.height < 1) {
 
-    if (this.topLeftCorner.x % 2 !== 0) {
       return false
-    }
 
-    if (this.topLeftCorner.y % 2 !== 0) {
-      return false
-    }
-
-    if (!Number.isInteger(this.xWidth)) {
-      return false
-    }
-
-    if (!Number.isInteger(this.yHeight)) {
-      return false
-    }
-
-    if (this.xWidth < 1) {
-      return false
-    }
-
-    if (this.yHeight < 1) {
-      return false
     }
 
     return true
+
   }
 
   /**
    * Creates the skeleton coordinates for this range.
    *
-   * Skeleton coordinates are placed on the true rows and columns
-   * of the Midgard coordinate system, using steps of two.
+   * The upper-left skeleton coordinate is always (2, 2).
+   * Skeleton coordinates use steps of two in both directions.
    *
    * @returns The coordinates that form the skeleton.
    */
   getSkeleton(): Coordinate[] {
+
     const coordinates: Coordinate[] = []
 
-    for (let yIndex = 0; yIndex < this.yHeight; yIndex++) {
-      const y = this.topLeftCorner.y + yIndex * 2
+    const startX = 2
 
-      for (let xIndex = 0; xIndex < this.xWidth; xIndex++) {
-        const x = this.topLeftCorner.x + xIndex * 2
+    const startY = 2
+
+    for (let yIndex = 0; yIndex < this.height; yIndex++) {
+
+      const y = startY + yIndex * 2
+
+      for (let xIndex = 0; xIndex < this.width; xIndex++) {
+
+        const x = startX + xIndex * 2
 
         coordinates.push({
           x,
           y
         })
+
       }
+
     }
 
     return coordinates
+
   }
 
   /**
    * Determines whether this range should be filled
    * around its skeleton.
    *
-   * A single-coordinate range can choose whether to use fillAround.
-   * A range containing more than one skeleton coordinate is always
-   * filled around automatically.
+   * A 1 by 1 skeleton can choose whether to use fillAround.
+   * Any larger skeleton is always filled around automatically.
    *
    * @param options - Options for creating the coordinate range.
    * @returns True if this range should be filled around.
@@ -141,17 +141,24 @@ export class CoordinateRange {
   shouldFillAround(
     options: CoordinateRangeOptions = {}
   ): boolean {
+
     const isSingleCoordinate =
-      this.xWidth === 1 && this.yHeight === 1
+      this.width === 1 && this.height === 1
 
     if (!isSingleCoordinate) {
+
       return true
+
     }
 
     if (options.fillAround === true) {
+
       return true
+
     }
 
     return false
+
   }
+
 }

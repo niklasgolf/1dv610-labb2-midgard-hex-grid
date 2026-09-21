@@ -10,12 +10,8 @@ describe('CoordinateRangeFiller', () => {
   describe('getCoordinatesAround', () => {
     it('returns the six surrounding coordinates for an x-dominated grid', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -38,12 +34,8 @@ describe('CoordinateRangeFiller', () => {
 
     it('returns the six surrounding coordinates for a y-dominated grid', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'y-dominated'
       })
 
@@ -68,12 +60,8 @@ describe('CoordinateRangeFiller', () => {
   describe('getCoordinateRange', () => {
     it('returns only the skeleton for a 1 by 1 range without fillAround', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -88,12 +76,8 @@ describe('CoordinateRangeFiller', () => {
 
     it('fills around a 1 by 1 range when fillAround is true', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -114,14 +98,10 @@ describe('CoordinateRangeFiller', () => {
       ])
     })
 
-    it('automatically fills around a larger range without duplicates', () => {
+    it('automatically fills around a wider range without duplicates', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 2,
-        yHeight: 1,
+        width: 2,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -145,14 +125,10 @@ describe('CoordinateRangeFiller', () => {
       expect(result).toHaveLength(10)
     })
 
-    it('automatically fills around a larger y-dominated range without duplicates', () => {
+    it('automatically fills around a wider y-dominated range without duplicates', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 2,
-        yHeight: 1,
+        width: 2,
+        height: 1,
         orientation: 'y-dominated'
       })
 

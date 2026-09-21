@@ -5,12 +5,8 @@ describe('CoordinateRange', () => {
   describe('isValid', () => {
     it('returns true for the smallest valid coordinate range', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -21,12 +17,8 @@ describe('CoordinateRange', () => {
 
     it('returns true for a larger valid coordinate range', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 10,
-          y: 14
-        },
-        xWidth: 3,
-        yHeight: 2,
+        width: 3,
+        height: 2,
         orientation: 'x-dominated'
       })
 
@@ -35,14 +27,10 @@ describe('CoordinateRange', () => {
       expect(result).toBe(true)
     })
 
-    it('returns false when the top-left x coordinate is less than 2', () => {
+    it('returns false when width is not an integer', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 0,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1.5,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -51,14 +39,10 @@ describe('CoordinateRange', () => {
       expect(result).toBe(false)
     })
 
-    it('returns false when the top-left y coordinate is less than 2', () => {
+    it('returns false when height is not an integer', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 0
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1.5,
         orientation: 'x-dominated'
       })
 
@@ -67,14 +51,10 @@ describe('CoordinateRange', () => {
       expect(result).toBe(false)
     })
 
-    it('returns false when the top-left x coordinate is odd', () => {
+    it('returns false when width is less than 1', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 3,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 0,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -83,78 +63,10 @@ describe('CoordinateRange', () => {
       expect(result).toBe(false)
     })
 
-    it('returns false when the top-left y coordinate is odd', () => {
+    it('returns false when height is less than 1', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 3
-        },
-        xWidth: 1,
-        yHeight: 1,
-        orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
-    })
-
-    it('returns false when x width is not an integer', () => {
-      const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1.5,
-        yHeight: 1,
-        orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
-    })
-
-    it('returns false when y height is not an integer', () => {
-      const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1.5,
-        orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
-    })
-
-    it('returns false when x width is less than 1', () => {
-      const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 0,
-        yHeight: 1,
-        orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
-    })
-
-    it('returns false when y height is less than 1', () => {
-      const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 0,
+        width: 1,
+        height: 0,
         orientation: 'x-dominated'
       })
 
@@ -165,14 +77,10 @@ describe('CoordinateRange', () => {
   })
 
   describe('getSkeleton', () => {
-    it('creates a single skeleton coordinate for a 1 by 1 range', () => {
+    it('creates coordinate 2,2 for a 1 by 1 range', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -183,26 +91,23 @@ describe('CoordinateRange', () => {
       ])
     })
 
-    it('creates a 3 by 2 skeleton using true Midgard coordinates', () => {
+    it('creates a 3 by 2 skeleton starting at coordinate 2,2', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 10,
-          y: 10
-        },
-        xWidth: 3,
-        yHeight: 2,
+        width: 3,
+        height: 2,
         orientation: 'x-dominated'
       })
 
       const result = range.getSkeleton()
 
       expect(result).toEqual([
-        { x: 10, y: 10 },
-        { x: 12, y: 10 },
-        { x: 14, y: 10 },
-        { x: 10, y: 12 },
-        { x: 12, y: 12 },
-        { x: 14, y: 12 }
+        { x: 2, y: 2 },
+        { x: 4, y: 2 },
+        { x: 6, y: 2 },
+
+        { x: 2, y: 4 },
+        { x: 4, y: 4 },
+        { x: 6, y: 4 }
       ])
     })
   })
@@ -210,12 +115,8 @@ describe('CoordinateRange', () => {
   describe('shouldFillAround', () => {
     it('returns false for a 1 by 1 range when fillAround is not specified', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -226,12 +127,8 @@ describe('CoordinateRange', () => {
 
     it('returns false for a 1 by 1 range when fillAround is false', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -244,12 +141,8 @@ describe('CoordinateRange', () => {
 
     it('returns true for a 1 by 1 range when fillAround is true', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 2,
-          y: 2
-        },
-        xWidth: 1,
-        yHeight: 1,
+        width: 1,
+        height: 1,
         orientation: 'x-dominated'
       })
 
@@ -260,14 +153,22 @@ describe('CoordinateRange', () => {
       expect(result).toBe(true)
     })
 
-    it('returns true automatically for a range larger than 1 by 1', () => {
+    it('returns true automatically when width is greater than 1', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 10,
-          y: 10
-        },
-        xWidth: 3,
-        yHeight: 2,
+        width: 3,
+        height: 1,
+        orientation: 'x-dominated'
+      })
+
+      const result = range.shouldFillAround()
+
+      expect(result).toBe(true)
+    })
+
+    it('returns true automatically when height is greater than 1', () => {
+      const range = new CoordinateRange({
+        width: 1,
+        height: 2,
         orientation: 'x-dominated'
       })
 
@@ -278,12 +179,8 @@ describe('CoordinateRange', () => {
 
     it('returns true for a larger range even when fillAround is false', () => {
       const range = new CoordinateRange({
-        topLeftCorner: {
-          x: 10,
-          y: 10
-        },
-        xWidth: 3,
-        yHeight: 2,
+        width: 3,
+        height: 2,
         orientation: 'x-dominated'
       })
 

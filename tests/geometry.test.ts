@@ -107,4 +107,45 @@ describe('HexagonGeometry', () => {
       expect(points[4]?.y).toBe(150)
     })
   })
+
+  describe('getBounds', () => {
+    it('calculates the outer bounds of points', () => {
+      const geometry =
+        new HexagonGeometry('x-dominated')
+
+      const points = [
+        { x: 50, y: 75 },
+        { x: 250, y: 25 },
+        { x: 300, y: 200 },
+        { x: 100, y: 250 }
+      ]
+
+      const bounds = geometry.getBounds(points)
+
+      expect(bounds).toEqual({
+        minX: 50,
+        minY: 25,
+        maxX: 300,
+        maxY: 250,
+        width: 250,
+        height: 225
+      })
+    })
+
+    it('returns zero bounds when there are no points', () => {
+      const geometry =
+        new HexagonGeometry('x-dominated')
+
+      const bounds = geometry.getBounds([])
+
+      expect(bounds).toEqual({
+        minX: 0,
+        minY: 0,
+        maxX: 0,
+        maxY: 0,
+        width: 0,
+        height: 0
+      })
+    })
+  })
 })

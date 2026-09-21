@@ -12,7 +12,10 @@ export {
   NeighbourCalculator
 } from './neighbours.js'
 
-export type { Point } from './geometry.js'
+export type {
+  Bounds,
+  Point
+} from './geometry.js'
 
 export {
   HexagonGeometry

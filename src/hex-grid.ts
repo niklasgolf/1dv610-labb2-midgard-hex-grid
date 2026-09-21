@@ -1,13 +1,14 @@
 import type { Coordinate } from './coordinate.js'
-
 import { CoordinateValidator } from './coordinate.js'
 
 import type { GridOrientation } from './orientation.js'
 
 import { NeighbourCalculator } from './neighbours.js'
 
-import type { Point } from './geometry.js'
-
+import type {
+  Bounds,
+  Point
+} from './geometry.js'
 import { HexagonGeometry } from './geometry.js'
 
 import { CoordinatePositioner } from './coordinate-positioner.js'
@@ -15,7 +16,6 @@ import { CoordinatePositioner } from './coordinate-positioner.js'
 import {
   CoordinateRange
 } from './coordinate-range.js'
-
 import type {
   CoordinateRangeConfig,
   CoordinateRangeOptions
@@ -28,7 +28,6 @@ import {
 import {
   CoordinateLayer
 } from './coordinate-layer.js'
-
 import type {
   LayeredCoordinate
 } from './coordinate-layer.js'
@@ -48,7 +47,6 @@ export type HexGridRange = Omit<
  * Represents a Midgard hex grid with a specific orientation.
  */
 export class HexGrid {
-
   private readonly orientation: GridOrientation
 
   /**
@@ -57,9 +55,7 @@ export class HexGrid {
    * @param orientation - The orientation of the hex grid.
    */
   constructor(orientation: GridOrientation) {
-
     this.orientation = orientation
-
   }
 
   /**
@@ -70,14 +66,12 @@ export class HexGrid {
    * @returns The six neighbouring coordinates.
    */
   getNeighbours(coordinate: Coordinate): Coordinate[] {
-
     const neighbourCalculator =
       new NeighbourCalculator(this.orientation)
 
     return neighbourCalculator.getNeighbours(
       coordinate
     )
-
   }
 
   /**
@@ -87,13 +81,11 @@ export class HexGrid {
    * @returns `true` if the coordinate is valid; otherwise `false`.
    */
   isValidCoordinate(coordinate: Coordinate): boolean {
-
     const validator = new CoordinateValidator()
 
     return validator.isValidCoordinate(
       coordinate
     )
-
   }
 
   /**
@@ -114,7 +106,6 @@ export class HexGrid {
     coordinate: Coordinate,
     size: number
   ): Point {
-
     const positioner =
       new CoordinatePositioner(this.orientation)
 
@@ -122,7 +113,6 @@ export class HexGrid {
       coordinate,
       size
     )
-
   }
 
   /**
@@ -137,7 +127,6 @@ export class HexGrid {
     center: Point,
     size: number
   ): Point[] {
-
     const geometry =
       new HexagonGeometry(this.orientation)
 
@@ -145,7 +134,45 @@ export class HexGrid {
       center,
       size
     )
+  }
 
+  /**
+   * Calculates the outer geometric bounds of hexagons
+   * represented by Midgard coordinates.
+   *
+   * Each coordinate is first converted to a center position.
+   * The six corner points of every hexagon are then calculated,
+   * and the outermost values are used to determine the bounds.
+   *
+   * @param coordinates - The coordinates whose bounds should be calculated.
+   * @param size - The width or height of one hexagon.
+   * @returns The outer bounds of all hexagons.
+   */
+  getGridBounds(
+    coordinates: Coordinate[],
+    size: number
+  ): Bounds {
+    const geometry =
+      new HexagonGeometry(this.orientation)
+
+    const points: Point[] = []
+
+    for (const coordinate of coordinates) {
+      const center = this.getCenterPosition(
+        coordinate,
+        size
+      )
+
+      const hexagonPoints =
+        geometry.getHexagonPoints(
+          center,
+          size
+        )
+
+      points.push(...hexagonPoints)
+    }
+
+    return geometry.getBounds(points)
   }
 
   /**
@@ -160,7 +187,6 @@ export class HexGrid {
     range: HexGridRange,
     options: CoordinateRangeOptions = {}
   ): Coordinate[] {
-
     const coordinateRange = new CoordinateRange({
       ...range,
       orientation: this.orientation
@@ -172,7 +198,6 @@ export class HexGrid {
     return coordinateRangeFiller.getCoordinateRange(
       options
     )
-
   }
 
   /**
@@ -190,7 +215,6 @@ export class HexGrid {
     range: HexGridRange,
     options: CoordinateRangeOptions = {}
   ): LayeredCoordinate[] {
-
     const coordinates = this.getCoordinateRange(
       range,
       options
@@ -201,7 +225,5 @@ export class HexGrid {
     )
 
     return coordinateLayer.getLayeredCoordinates()
-
   }
-
 }

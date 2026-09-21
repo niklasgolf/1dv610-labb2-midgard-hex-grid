@@ -72,12 +72,8 @@ describe('HexGrid', () => {
     const grid = new HexGrid('x-dominated')
 
     const range = {
-      topLeftCorner: {
-        x: 2,
-        y: 2
-      },
-      xWidth: 1,
-      yHeight: 1
+      width: 1,
+      height: 1
     }
 
     const result = grid.getCoordinateRange(
@@ -102,12 +98,8 @@ describe('HexGrid', () => {
     const grid = new HexGrid('y-dominated')
 
     const range = {
-      topLeftCorner: {
-        x: 2,
-        y: 2
-      },
-      xWidth: 1,
-      yHeight: 1
+      width: 1,
+      height: 1
     }
 
     const result = grid.getCoordinateRange(
@@ -132,12 +124,8 @@ describe('HexGrid', () => {
     const grid = new HexGrid('x-dominated')
 
     const range = {
-      topLeftCorner: {
-        x: 2,
-        y: 2
-      },
-      xWidth: 1,
-      yHeight: 1
+      width: 1,
+      height: 1
     }
 
     const result = grid.getLayeredCoordinateRange(
@@ -192,5 +180,101 @@ describe('HexGrid', () => {
       100 * Math.sqrt(3)
     )
     expect(result.y).toBeCloseTo(100)
+  })
+
+  describe('getGridBounds', () => {
+    it('calculates bounds for one x-dominated hexagon', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const bounds = grid.getGridBounds(
+        [
+          {
+            x: 2,
+            y: 2
+          }
+        ],
+        100
+      )
+
+      expect(bounds.minX).toBeCloseTo(50)
+      expect(bounds.maxX).toBeCloseTo(150)
+      expect(bounds.width).toBeCloseTo(100)
+
+      expect(bounds.minY).toBeCloseTo(
+        100 * Math.sqrt(3) -
+          100 / Math.sqrt(3)
+      )
+
+      expect(bounds.maxY).toBeCloseTo(
+        100 * Math.sqrt(3) +
+          100 / Math.sqrt(3)
+      )
+
+      expect(bounds.height).toBeCloseTo(
+        200 / Math.sqrt(3)
+      )
+    })
+
+    it('calculates bounds for one y-dominated hexagon', () => {
+      const grid = new HexGrid('y-dominated')
+
+      const bounds = grid.getGridBounds(
+        [
+          {
+            x: 2,
+            y: 2
+          }
+        ],
+        100
+      )
+
+      expect(bounds.minY).toBeCloseTo(50)
+      expect(bounds.maxY).toBeCloseTo(150)
+      expect(bounds.height).toBeCloseTo(100)
+
+      expect(bounds.minX).toBeCloseTo(
+        100 * Math.sqrt(3) -
+          100 / Math.sqrt(3)
+      )
+
+      expect(bounds.maxX).toBeCloseTo(
+        100 * Math.sqrt(3) +
+          100 / Math.sqrt(3)
+      )
+
+      expect(bounds.width).toBeCloseTo(
+        200 / Math.sqrt(3)
+      )
+    })
+
+    it('calculates combined bounds for multiple hexagons', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const coordinates = grid.getCoordinateRange({
+        width: 3,
+        height: 2
+      })
+
+      const bounds = grid.getGridBounds(
+        coordinates,
+        100
+      )
+
+      expect(bounds.minX).toBeCloseTo(-50)
+      expect(bounds.maxX).toBeCloseTo(450)
+      expect(bounds.width).toBeCloseTo(500)
+
+      expect(bounds.minY).toBeCloseTo(
+        50 / Math.sqrt(3)
+      )
+
+      expect(bounds.maxY).toBeCloseTo(
+        850 / Math.sqrt(3)
+      )
+
+      expect(bounds.height).toBeCloseTo(
+        800 / Math.sqrt(3)
+      )
+    })
   })
 })
