@@ -2,6 +2,120 @@ import { describe, expect, it } from 'vitest'
 import { HexGrid } from '../src/hex-grid.js'
 
 describe('HexGrid', () => {
+  describe('createSingleHexagon', () => {
+    it('creates one x-dominated hexagon without surrounding fill', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const hexagon = grid.createSingleHexagon({
+        hexDiameter: 100
+      })
+
+      expect(hexagon.coordinate).toEqual({
+        x: 2,
+        y: 2
+      })
+
+      expect(hexagon.center.x).toBeCloseTo(100)
+      expect(hexagon.center.y).toBeCloseTo(
+        100 * Math.sqrt(3)
+      )
+
+      expect(hexagon.points).toHaveLength(6)
+    })
+
+    it('uses hexDiameter as height for a y-dominated hexagon', () => {
+      const grid = new HexGrid('y-dominated')
+
+      const hexagon = grid.createSingleHexagon({
+        hexDiameter: 100
+      })
+
+      expect(hexagon.coordinate).toEqual({
+        x: 2,
+        y: 2
+      })
+
+      expect(hexagon.points).toHaveLength(6)
+
+      const yValues = hexagon.points.map(
+        (point) => point.y
+      )
+
+      const height =
+        Math.max(...yValues) -
+        Math.min(...yValues)
+
+      expect(height).toBeCloseTo(100)
+    })
+  })
+
+  describe('createGrid', () => {
+    it('creates seven layered hexagons from a 1 by 1 skeleton', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const hexagons = grid.createGrid({
+        hexDiameter: 100,
+        skeletonWidth: 1,
+        skeletonHeight: 1
+      })
+
+      expect(hexagons).toHaveLength(7)
+
+      expect(
+        hexagons.map((hexagon) => ({
+          ...hexagon.coordinate,
+          zIndex: hexagon.zIndex
+        }))
+      ).toEqual([
+        { x: 1, y: 1, zIndex: 100 },
+        { x: 3, y: 1, zIndex: 100 },
+
+        { x: 0, y: 2, zIndex: 200 },
+        { x: 2, y: 2, zIndex: 200 },
+        { x: 4, y: 2, zIndex: 200 },
+
+        { x: 1, y: 3, zIndex: 300 },
+        { x: 3, y: 3, zIndex: 300 }
+      ])
+    })
+
+    it('creates a filled and layered grid from a 3 by 2 skeleton', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const expectedCoordinates =
+        grid.getLayeredCoordinateRange(
+          {
+            width: 3,
+            height: 2
+          },
+          {
+            fillAround: true
+          }
+        )
+
+      const hexagons = grid.createGrid({
+        hexDiameter: 100,
+        skeletonWidth: 3,
+        skeletonHeight: 2
+      })
+
+      expect(hexagons).toHaveLength(
+        expectedCoordinates.length
+      )
+
+      expect(
+        hexagons.map((hexagon) => ({
+          ...hexagon.coordinate,
+          zIndex: hexagon.zIndex
+        }))
+      ).toEqual(expectedCoordinates)
+
+      for (const hexagon of hexagons) {
+        expect(hexagon.points).toHaveLength(6)
+      }
+    })
+  })
+
   it('returns x-dominated neighbours for an x-dominated grid', () => {
     const grid = new HexGrid('x-dominated')
 

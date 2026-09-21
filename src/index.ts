@@ -46,6 +46,14 @@ export {
   CoordinateLayer
 } from './coordinate-layer.js'
 
-export type { HexGridRange } from './hex-grid.js'
+export type {
+  Hexagon,
+  HexGridOptions,
+  HexGridRange,
+  LayeredHexagon,
+  SingleHexagonOptions
+} from './hex-grid.js'
 
-export { HexGrid } from './hex-grid.js'
+export {
+  HexGrid
+} from './hex-grid.js'

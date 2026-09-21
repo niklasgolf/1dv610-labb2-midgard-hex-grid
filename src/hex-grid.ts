@@ -1,4 +1,5 @@
 import type { Coordinate } from './coordinate.js'
+
 import { CoordinateValidator } from './coordinate.js'
 
 import type { GridOrientation } from './orientation.js'
@@ -9,6 +10,7 @@ import type {
   Bounds,
   Point
 } from './geometry.js'
+
 import { HexagonGeometry } from './geometry.js'
 
 import { CoordinatePositioner } from './coordinate-positioner.js'
@@ -16,6 +18,7 @@ import { CoordinatePositioner } from './coordinate-positioner.js'
 import {
   CoordinateRange
 } from './coordinate-range.js'
+
 import type {
   CoordinateRangeConfig,
   CoordinateRangeOptions
@@ -28,6 +31,7 @@ import {
 import {
   CoordinateLayer
 } from './coordinate-layer.js'
+
 import type {
   LayeredCoordinate
 } from './coordinate-layer.js'
@@ -42,6 +46,43 @@ export type HexGridRange = Omit<
   CoordinateRangeConfig,
   'orientation'
 >
+
+/**
+ * Options for creating one single hexagon.
+ */
+export type SingleHexagonOptions = {
+  hexDiameter: number
+}
+
+/**
+ * Options for creating a complete Midgard grid.
+ *
+ * The skeleton width and height describe the rectangular
+ * skeleton that the complete grid is built around.
+ */
+export type HexGridOptions = {
+  hexDiameter: number
+  skeletonWidth: number
+  skeletonHeight: number
+}
+
+/**
+ * Represents one complete hexagon prepared for rendering.
+ */
+export type Hexagon = {
+  coordinate: Coordinate
+  center: Point
+  points: Point[]
+}
+
+/**
+ * Represents a hexagon in a complete Midgard grid.
+ *
+ * The z-index describes the rendering layer of the hexagon.
+ */
+export type LayeredHexagon = Hexagon & {
+  zIndex: number
+}
 
 /**
  * Represents a Midgard hex grid with a specific orientation.
@@ -59,13 +100,85 @@ export class HexGrid {
   }
 
   /**
+   * Creates one single hexagon without any surrounding fill.
+   *
+   * @param options - The geometric size of the hexagon.
+   * @returns One complete hexagon prepared for rendering.
+   */
+  createSingleHexagon(
+    options: SingleHexagonOptions
+  ): Hexagon {
+    const coordinates = this.getCoordinateRange(
+      {
+        width: 1,
+        height: 1
+      },
+      {
+        fillAround: false
+      }
+    )
+
+    const coordinate = coordinates[0]
+
+    if (coordinate === undefined) {
+      throw new Error(
+        'Could not create the single hexagon coordinate.'
+      )
+    }
+
+    return this.createHexagon(
+      coordinate,
+      options.hexDiameter
+    )
+  }
+
+  /**
+   * Creates a complete Midgard grid around a skeleton.
+   *
+   * Surrounding coordinates are always filled automatically.
+   * The returned hexagons are sorted for rendering and include
+   * calculated z-index values.
+   *
+   * @param options - The hexagon size and skeleton dimensions.
+   * @returns All layered hexagons belonging to the complete grid.
+   */
+  createGrid(
+    options: HexGridOptions
+  ): LayeredHexagon[] {
+    const coordinates =
+      this.getLayeredCoordinateRange(
+        {
+          width: options.skeletonWidth,
+          height: options.skeletonHeight
+        },
+        {
+          fillAround: true
+        }
+      )
+
+    return coordinates.map((coordinate) => {
+      const hexagon = this.createHexagon(
+        coordinate,
+        options.hexDiameter
+      )
+
+      return {
+        ...hexagon,
+        zIndex: coordinate.zIndex
+      }
+    })
+  }
+
+  /**
    * Returns the six neighbouring coordinates of a coordinate
    * using this grid's orientation.
    *
    * @param coordinate - The coordinate whose neighbours should be found.
    * @returns The six neighbouring coordinates.
    */
-  getNeighbours(coordinate: Coordinate): Coordinate[] {
+  getNeighbours(
+    coordinate: Coordinate
+  ): Coordinate[] {
     const neighbourCalculator =
       new NeighbourCalculator(this.orientation)
 
@@ -80,7 +193,9 @@ export class HexGrid {
    * @param coordinate - The coordinate to validate.
    * @returns `true` if the coordinate is valid; otherwise `false`.
    */
-  isValidCoordinate(coordinate: Coordinate): boolean {
+  isValidCoordinate(
+    coordinate: Coordinate
+  ): boolean {
     const validator = new CoordinateValidator()
 
     return validator.isValidCoordinate(
@@ -225,5 +340,29 @@ export class HexGrid {
     )
 
     return coordinateLayer.getLayeredCoordinates()
+  }
+
+  /**
+   * Creates the geometry for one Midgard coordinate.
+   */
+  private createHexagon(
+    coordinate: Coordinate,
+    hexDiameter: number
+  ): Hexagon {
+    const center = this.getCenterPosition(
+      coordinate,
+      hexDiameter
+    )
+
+    const points = this.getHexagonPoints(
+      center,
+      hexDiameter
+    )
+
+    return {
+      coordinate,
+      center,
+      points
+    }
   }
 }
