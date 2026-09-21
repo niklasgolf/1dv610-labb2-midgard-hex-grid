@@ -159,4 +159,38 @@ describe('HexGrid', () => {
       { x: 3, y: 3, zIndex: 300 }
     ])
   })
+
+  it('calculates a center position for an x-dominated coordinate', () => {
+    const grid = new HexGrid('x-dominated')
+
+    const result = grid.getCenterPosition(
+      {
+        x: 2,
+        y: 2
+      },
+      100
+    )
+
+    expect(result.x).toBeCloseTo(100)
+    expect(result.y).toBeCloseTo(
+      100 * Math.sqrt(3)
+    )
+  })
+
+  it('calculates a center position for a y-dominated coordinate', () => {
+    const grid = new HexGrid('y-dominated')
+
+    const result = grid.getCenterPosition(
+      {
+        x: 2,
+        y: 2
+      },
+      100
+    )
+
+    expect(result.x).toBeCloseTo(
+      100 * Math.sqrt(3)
+    )
+    expect(result.y).toBeCloseTo(100)
+  })
 })

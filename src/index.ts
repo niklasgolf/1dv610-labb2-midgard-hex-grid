@@ -18,6 +18,10 @@ export {
   HexagonGeometry
 } from './geometry.js'
 
+export {
+  CoordinatePositioner
+} from './coordinate-positioner.js'
+
 export type {
   CoordinateRangeConfig,
   CoordinateRangeOptions

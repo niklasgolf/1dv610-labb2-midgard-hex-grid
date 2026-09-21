@@ -10,6 +10,8 @@ import type { Point } from './geometry.js'
 
 import { HexagonGeometry } from './geometry.js'
 
+import { CoordinatePositioner } from './coordinate-positioner.js'
+
 import {
   CoordinateRange
 } from './coordinate-range.js'
@@ -46,6 +48,7 @@ export type HexGridRange = Omit<
  * Represents a Midgard hex grid with a specific orientation.
  */
 export class HexGrid {
+
   private readonly orientation: GridOrientation
 
   /**
@@ -54,7 +57,9 @@ export class HexGrid {
    * @param orientation - The orientation of the hex grid.
    */
   constructor(orientation: GridOrientation) {
+
     this.orientation = orientation
+
   }
 
   /**
@@ -65,10 +70,14 @@ export class HexGrid {
    * @returns The six neighbouring coordinates.
    */
   getNeighbours(coordinate: Coordinate): Coordinate[] {
+
     const neighbourCalculator =
       new NeighbourCalculator(this.orientation)
 
-    return neighbourCalculator.getNeighbours(coordinate)
+    return neighbourCalculator.getNeighbours(
+      coordinate
+    )
+
   }
 
   /**
@@ -78,9 +87,42 @@ export class HexGrid {
    * @returns `true` if the coordinate is valid; otherwise `false`.
    */
   isValidCoordinate(coordinate: Coordinate): boolean {
+
     const validator = new CoordinateValidator()
 
-    return validator.isValidCoordinate(coordinate)
+    return validator.isValidCoordinate(
+      coordinate
+    )
+
+  }
+
+  /**
+   * Calculates the center position of a Midgard coordinate
+   * using this grid's orientation.
+   *
+   * For an x-dominated grid, size represents the
+   * complete width of one hexagon.
+   *
+   * For a y-dominated grid, size represents the
+   * complete height of one hexagon.
+   *
+   * @param coordinate - The Midgard coordinate to position.
+   * @param size - The width or height of one hexagon.
+   * @returns The calculated center point.
+   */
+  getCenterPosition(
+    coordinate: Coordinate,
+    size: number
+  ): Point {
+
+    const positioner =
+      new CoordinatePositioner(this.orientation)
+
+    return positioner.getCenterPosition(
+      coordinate,
+      size
+    )
+
   }
 
   /**
@@ -95,6 +137,7 @@ export class HexGrid {
     center: Point,
     size: number
   ): Point[] {
+
     const geometry =
       new HexagonGeometry(this.orientation)
 
@@ -102,6 +145,7 @@ export class HexGrid {
       center,
       size
     )
+
   }
 
   /**
@@ -116,6 +160,7 @@ export class HexGrid {
     range: HexGridRange,
     options: CoordinateRangeOptions = {}
   ): Coordinate[] {
+
     const coordinateRange = new CoordinateRange({
       ...range,
       orientation: this.orientation
@@ -127,6 +172,7 @@ export class HexGrid {
     return coordinateRangeFiller.getCoordinateRange(
       options
     )
+
   }
 
   /**
@@ -144,6 +190,7 @@ export class HexGrid {
     range: HexGridRange,
     options: CoordinateRangeOptions = {}
   ): LayeredCoordinate[] {
+
     const coordinates = this.getCoordinateRange(
       range,
       options
@@ -154,5 +201,7 @@ export class HexGrid {
     )
 
     return coordinateLayer.getLayeredCoordinates()
+
   }
+
 }
