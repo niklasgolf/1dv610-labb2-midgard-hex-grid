@@ -10,6 +10,10 @@ import {
   XDominatedHexagonGeometry
 } from './g-x-dominated.js'
 
+import {
+  YDominatedHexagonGeometry
+} from './g-y-dominated.js'
+
 /**
  * Represents a two-dimensional point used for geometric calculations.
  *
@@ -78,48 +82,12 @@ export class HexagonGeometry {
     center: Point,
     height: number
   ): Point[] {
-    const halfHeight = height / 2
-    const radius = height / Math.sqrt(3)
-    const halfRadius = radius / 2
+    const geometry = new YDominatedHexagonGeometry()
 
-    const upperLeft: Point = {
-      x: center.x - halfRadius,
-      y: center.y - halfHeight
-    }
-
-    const upperRight: Point = {
-      x: center.x + halfRadius,
-      y: center.y - halfHeight
-    }
-
-    const right: Point = {
-      x: center.x + radius,
-      y: center.y
-    }
-
-    const lowerRight: Point = {
-      x: center.x + halfRadius,
-      y: center.y + halfHeight
-    }
-
-    const lowerLeft: Point = {
-      x: center.x - halfRadius,
-      y: center.y + halfHeight
-    }
-
-    const left: Point = {
-      x: center.x - radius,
-      y: center.y
-    }
-
-    return [
-      upperLeft,
-      upperRight,
-      right,
-      lowerRight,
-      lowerLeft,
-      left
-    ]
+    return geometry.getHexagonPoints(
+      center,
+      height
+    )
   }
 
   /**
