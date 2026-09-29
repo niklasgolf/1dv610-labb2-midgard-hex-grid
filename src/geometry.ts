@@ -1,5 +1,11 @@
 import type { GridOrientation } from './orientation.js'
 
+import type { Bounds } from './g-bounds.js'
+
+export type { Bounds } from './g-bounds.js'
+
+import { BoundsCalculator } from './g-bounds.js'
+
 /**
  * Represents a two-dimensional point used for geometric calculations.
  *
@@ -9,18 +15,6 @@ import type { GridOrientation } from './orientation.js'
 export type Point = {
   x: number
   y: number
-}
-
-/**
- * Represents the outer bounds of geometric points.
- */
-export type Bounds = {
-  minX: number
-  minY: number
-  maxX: number
-  maxY: number
-  width: number
-  height: number
 }
 
 /**
@@ -195,49 +189,8 @@ export class HexagonGeometry {
    * @returns The minimum and maximum positions and total dimensions.
    */
   getBounds(points: Point[]): Bounds {
-    const firstPoint = points[0]
+    const boundsCalculator = new BoundsCalculator()
 
-    if (firstPoint === undefined) {
-      return {
-        minX: 0,
-        minY: 0,
-        maxX: 0,
-        maxY: 0,
-        width: 0,
-        height: 0
-      }
-    }
-
-    let minX = firstPoint.x
-    let minY = firstPoint.y
-    let maxX = firstPoint.x
-    let maxY = firstPoint.y
-
-    for (const point of points) {
-      if (point.x < minX) {
-        minX = point.x
-      }
-
-      if (point.y < minY) {
-        minY = point.y
-      }
-
-      if (point.x > maxX) {
-        maxX = point.x
-      }
-
-      if (point.y > maxY) {
-        maxY = point.y
-      }
-    }
-
-    return {
-      minX,
-      minY,
-      maxX,
-      maxY,
-      width: maxX - minX,
-      height: maxY - minY
-    }
+    return boundsCalculator.getBounds(points)
   }
 }
