@@ -6,6 +6,8 @@ import { CoordinateRangeSkeleton } from './c-r-skeleton.js'
 
 import { CoordinateRangeValidator } from './c-r-validation.js'
 
+import { CoordinateRangeFillAround } from './c-r-fill-around.js'
+
 /**
  * Describes the values needed to create a Midgard coordinate range.
  *
@@ -109,22 +111,13 @@ export class CoordinateRange {
     options: CoordinateRangeOptions = {}
   ): boolean {
 
-    const isSingleCoordinate =
-      this.width === 1 && this.height === 1
+    const fillAround = new CoordinateRangeFillAround()
 
-    if (!isSingleCoordinate) {
-
-      return true
-
-    }
-
-    if (options.fillAround === true) {
-
-      return true
-
-    }
-
-    return false
+    return fillAround.shouldFillAround(
+      this.width,
+      this.height,
+      options.fillAround
+    )
 
   }
 
