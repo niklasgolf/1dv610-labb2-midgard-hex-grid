@@ -4,6 +4,8 @@ import type { GridOrientation } from './orientation.js'
 
 import { CoordinateRangeSkeleton } from './c-r-skeleton.js'
 
+import { CoordinateRangeValidator } from './c-r-validation.js'
+
 /**
  * Describes the values needed to create a Midgard coordinate range.
  *
@@ -65,31 +67,12 @@ export class CoordinateRange {
    */
   isValid(): boolean {
 
-    if (!Number.isInteger(this.width)) {
+    const validator = new CoordinateRangeValidator()
 
-      return false
-
-    }
-
-    if (!Number.isInteger(this.height)) {
-
-      return false
-
-    }
-
-    if (this.width < 1) {
-
-      return false
-
-    }
-
-    if (this.height < 1) {
-
-      return false
-
-    }
-
-    return true
+    return validator.isValid(
+      this.width,
+      this.height
+    )
 
   }
 
