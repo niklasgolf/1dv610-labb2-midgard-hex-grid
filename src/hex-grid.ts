@@ -36,6 +36,10 @@ import type {
   LayeredCoordinate
 } from './coordinate-layer.js'
 
+import {
+  HexGridBoundsCalculator
+} from './h-g-bounds.js'
+
 /**
  * Describes a coordinate range when using a HexGrid instance.
  *
@@ -267,27 +271,13 @@ export class HexGrid {
     coordinates: Coordinate[],
     size: number
   ): Bounds {
-    const geometry =
-      new HexagonGeometry(this.orientation)
+    const boundsCalculator =
+      new HexGridBoundsCalculator(this.orientation)
 
-    const points: Point[] = []
-
-    for (const coordinate of coordinates) {
-      const center = this.getCenterPosition(
-        coordinate,
-        size
-      )
-
-      const hexagonPoints =
-        geometry.getHexagonPoints(
-          center,
-          size
-        )
-
-      points.push(...hexagonPoints)
-    }
-
-    return geometry.getBounds(points)
+    return boundsCalculator.getGridBounds(
+      coordinates,
+      size
+    )
   }
 
   /**
