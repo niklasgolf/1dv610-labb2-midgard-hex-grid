@@ -18,7 +18,7 @@ The automated tests can be reproduced by cloning the repository, installing the 
 npx vitest run
 ```
 
-The manual tests can be reproduced by running the separate Test-App and using its different demonstration pages to inspect the generated grids and library behaviour.
+The manual tests can be reproduced using the separate [Midgard Test-App](https://github.com/niklasgolf/1dv610-labb2-midgard-test-app). Run the Test-App and use its different demonstration pages to inspect the generated grids and library behaviour.
 
 ## Test Results
 
