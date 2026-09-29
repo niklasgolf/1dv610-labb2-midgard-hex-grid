@@ -2,6 +2,8 @@ import type { Coordinate } from './coordinate.js'
 
 import type { GridOrientation } from './orientation.js'
 
+import { CoordinateRangeSkeleton } from './c-r-skeleton.js'
+
 /**
  * Describes the values needed to create a Midgard coordinate range.
  *
@@ -101,30 +103,12 @@ export class CoordinateRange {
    */
   getSkeleton(): Coordinate[] {
 
-    const coordinates: Coordinate[] = []
+    const skeleton = new CoordinateRangeSkeleton()
 
-    const startX = 2
-
-    const startY = 2
-
-    for (let yIndex = 0; yIndex < this.height; yIndex++) {
-
-      const y = startY + yIndex * 2
-
-      for (let xIndex = 0; xIndex < this.width; xIndex++) {
-
-        const x = startX + xIndex * 2
-
-        coordinates.push({
-          x,
-          y
-        })
-
-      }
-
-    }
-
-    return coordinates
+    return skeleton.create(
+      this.width,
+      this.height
+    )
 
   }
 
