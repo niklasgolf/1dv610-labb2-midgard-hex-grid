@@ -6,6 +6,10 @@ export type { Bounds } from './g-bounds.js'
 
 import { BoundsCalculator } from './g-bounds.js'
 
+import {
+  XDominatedHexagonGeometry
+} from './g-x-dominated.js'
+
 /**
  * Represents a two-dimensional point used for geometric calculations.
  *
@@ -51,48 +55,12 @@ export class HexagonGeometry {
     center: Point,
     width: number
   ): Point[] {
-    const halfWidth = width / 2
-    const radius = width / Math.sqrt(3)
-    const halfRadius = radius / 2
+    const geometry = new XDominatedHexagonGeometry()
 
-    const top: Point = {
-      x: center.x,
-      y: center.y - radius
-    }
-
-    const upperRight: Point = {
-      x: center.x + halfWidth,
-      y: center.y - halfRadius
-    }
-
-    const lowerRight: Point = {
-      x: center.x + halfWidth,
-      y: center.y + halfRadius
-    }
-
-    const bottom: Point = {
-      x: center.x,
-      y: center.y + radius
-    }
-
-    const lowerLeft: Point = {
-      x: center.x - halfWidth,
-      y: center.y + halfRadius
-    }
-
-    const upperLeft: Point = {
-      x: center.x - halfWidth,
-      y: center.y - halfRadius
-    }
-
-    return [
-      top,
-      upperRight,
-      lowerRight,
-      bottom,
-      lowerLeft,
-      upperLeft
-    ]
+    return geometry.getHexagonPoints(
+      center,
+      width
+    )
   }
 
   /**
