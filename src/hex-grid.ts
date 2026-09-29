@@ -40,6 +40,10 @@ import {
   HexGridBoundsCalculator
 } from './h-g-bounds.js'
 
+import {
+  HexGridHexagonCreator
+} from './h-g-hexagon.js'
+
 /**
  * Describes a coordinate range when using a HexGrid instance.
  *
@@ -130,7 +134,10 @@ export class HexGrid {
       )
     }
 
-    return this.createHexagon(
+    const hexagonCreator =
+      new HexGridHexagonCreator(this.orientation)
+
+    return hexagonCreator.createHexagon(
       coordinate,
       options.hexDiameter
     )
@@ -160,8 +167,11 @@ export class HexGrid {
         }
       )
 
+    const hexagonCreator =
+      new HexGridHexagonCreator(this.orientation)
+
     return coordinates.map((coordinate) => {
-      const hexagon = this.createHexagon(
+      const hexagon = hexagonCreator.createHexagon(
         coordinate,
         options.hexDiameter
       )
@@ -330,29 +340,5 @@ export class HexGrid {
     )
 
     return coordinateLayer.getLayeredCoordinates()
-  }
-
-  /**
-   * Creates the geometry for one Midgard coordinate.
-   */
-  private createHexagon(
-    coordinate: Coordinate,
-    hexDiameter: number
-  ): Hexagon {
-    const center = this.getCenterPosition(
-      coordinate,
-      hexDiameter
-    )
-
-    const points = this.getHexagonPoints(
-      center,
-      hexDiameter
-    )
-
-    return {
-      coordinate,
-      center,
-      points
-    }
   }
 }
