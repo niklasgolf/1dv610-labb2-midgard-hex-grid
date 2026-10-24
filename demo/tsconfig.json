@@ -16,5 +16,5 @@
     "skipLibCheck": true
   },
 
-  "include": ["demo-theory.ts", "vite.config.ts"]
+  "include": ["demo-theory.ts", "demo-minimal.ts", "vite.config.ts"]
 }

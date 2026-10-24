@@ -91,6 +91,19 @@ h1 {
   text-align: center;
 }
 
+.sheet__minimal {
+  display: block;
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
 .diagrams {
   display: flex;
   align-items: flex-start;
@@ -167,6 +180,7 @@ h2 {
 `
 
 installTheoryStyles()
+createTheoryLayout()
 
 const theory = requireHtmlElement(document, '#theory')
 const xSection = requireHtmlElement(document, '#x-dominated')
@@ -189,6 +203,96 @@ function installTheoryStyles() {
   style.id = 'midgard-theory-styles'
   style.textContent = theoryStyles
   document.head.append(style)
+}
+
+function createTheoryLayout() {
+  if (document.getElementById('theory') !== null) {
+    return
+  }
+
+  const page = document.createElement('main')
+  page.className = 'page'
+
+  const sheet = document.createElement('article')
+  sheet.className = 'sheet'
+  sheet.append(
+    createTheorySection(),
+    createDemonstrationSection(
+      'x-dominated',
+      'In the X-dominated grid',
+      'xdom',
+      'Y-movement is not allowed',
+      'x-hexgrid'
+    ),
+    createDemonstrationSection(
+      'y-dominated',
+      'In the Y-dominated grid',
+      'ydom',
+      'X-movement is not allowed',
+      'y-hexgrid'
+    )
+  )
+
+  page.append(sheet)
+  document.body.prepend(page)
+}
+
+function createTheorySection() {
+  const section = document.createElement('div')
+  section.id = 'theory'
+  section.className = 'sheet-section'
+
+  const header = document.createElement('header')
+  header.className = 'sheet__intro'
+
+  const heading = document.createElement('h1')
+  heading.textContent = 'Midgard Hex Grid'
+
+  const minimal = document.createElement('a')
+  minimal.className = 'sheet__minimal'
+  minimal.href = '/minimal.html'
+  minimal.textContent = 'Minimal Demonstration'
+
+  header.append(heading, minimal)
+  section.append(header)
+  return section
+}
+
+function createDemonstrationSection(
+  id: string,
+  leftHeading: string,
+  leftStageId: string,
+  rightHeading: string,
+  rightStageId: string
+) {
+  const section = document.createElement('div')
+  section.id = id
+  section.className = 'sheet-section'
+
+  const diagrams = document.createElement('div')
+  diagrams.className = 'diagrams'
+  diagrams.append(
+    createDiagram(leftHeading, leftStageId),
+    createDiagram(rightHeading, rightStageId)
+  )
+
+  section.append(diagrams)
+  return section
+}
+
+function createDiagram(heading: string, stageId: string) {
+  const diagram = document.createElement('section')
+  diagram.className = 'diagram'
+
+  const title = document.createElement('h2')
+  title.textContent = heading
+
+  const stage = document.createElement('div')
+  stage.id = stageId
+  stage.className = 'stage'
+
+  diagram.append(title, stage)
+  return diagram
 }
 
 function renderTheory(_root: HTMLElement) {
