@@ -1,0 +1,11 @@
+{
+  "name": "midgard-hex-grid-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1"
+  }
+}
