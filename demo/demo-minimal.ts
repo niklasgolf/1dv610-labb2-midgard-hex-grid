@@ -1,4 +1,135 @@
-import { HexGrid } from '../src/index.ts'
+import { HexGrid, type LayeredHexagon } from '../src/index.ts'
+
+/**
+ * ⬡ X-dominated Hex-grid
+ *
+ * The following TypeScript code generates an X-dominated hexagonal
+ * grid using the Midgard Hex Grid library.
+ *
+ * An X-dominated hexagon has a pointed top and a pointed bottom,
+ * with flat sides on the left and right.
+ *
+ * The `HexGrid` constructor selects the orientation. Passing
+ * `'x-dominated'` creates this pointy-top grid. The same class
+ * creates a flat-top grid when given `'y-dominated'`.
+ *
+ * - `hexDiameter` is the horizontal width of each hexagon, from the
+ *   left flat side to the right flat side. This example uses 120.
+ * - `skeletonWidth` and `skeletonHeight` are the skeleton dimensions,
+ *   counted in skeleton coordinates. This example uses 2 and 2.
+ *
+ * The skeleton is the rectangular core. It starts at coordinate
+ * (2, 2) and steps by two, so these dimensions are the four
+ * coordinates (2, 2), (4, 2), (2, 4), and (4, 4). `createGrid()`
+ * fills the surrounding hexagons automatically. A 2 × 2 skeleton
+ * generates 17 hexagons.
+ *
+ * Each hexagon in the returned array has its Midgard `coordinate`,
+ * its `center`, its six corner `points`, and a `zIndex`. The library
+ * does not generate SVG or HTML. Draw `points` with the graphics
+ * system the application already uses.
+ *
+ * Change `hexDiameter` to resize the hexagons. Change
+ * `skeletonWidth`, `skeletonHeight`, or both to create another grid
+ * size. The library recalculates the geometry.
+ *
+ * @returns The 17 hexagons of the complete grid, including the
+ * surrounding fill, with coordinates and geometry ready to render.
+ */
+function createXDominatedGrid() {
+  const hexDiameter = 120
+  const hexGrid = new HexGrid('x-dominated')
+
+  const hexagons = hexGrid.createGrid({
+    hexDiameter,
+    skeletonWidth: 2,
+    skeletonHeight: 2
+  })
+
+  return hexagons
+}
+
+/**
+ * ⬡ Y-dominated Hex-grid
+ *
+ * The following TypeScript code generates a Y-dominated hexagonal
+ * grid using the Midgard Hex Grid library.
+ *
+ * A Y-dominated hexagon has a flat top and a flat bottom, with
+ * points on the left and right.
+ *
+ * Both orientations use the same `HexGrid` class. The constructor
+ * argument selects the orientation: `'y-dominated'` here, and
+ * `'x-dominated'` in `createXDominatedGrid`.
+ *
+ * - For a Y-dominated grid, `hexDiameter` is the vertical hexagon
+ *   height, from the flat top to the flat bottom. The library
+ *   derives the horizontal width. This example uses 120.
+ * - `skeletonWidth` and `skeletonHeight` again describe a 2 × 2
+ *   skeleton.
+ *
+ * `createGrid()` fills the surrounding hexagons automatically and
+ * calculates their geometry. The returned array contains 17 hexagons.
+ *
+ * Each hexagon carries its `coordinate`, `center`, `points`, and
+ * `zIndex`. The application decides how to render that geometry.
+ * The library does not generate SVG or HTML.
+ *
+ * Change `hexDiameter` to change the hexagon height, or change the
+ * skeleton dimensions to change the grid. Keep the constructor
+ * argument `'y-dominated'` to keep the flat-top orientation.
+ *
+ * @returns The 17 hexagons of the complete grid, including the
+ * surrounding fill, with coordinates and geometry ready to render.
+ */
+function createYDominatedGrid() {
+  const hexDiameter = 120
+  const hexGrid = new HexGrid('y-dominated')
+
+  const hexagons = hexGrid.createGrid({
+    hexDiameter,
+    skeletonWidth: 2,
+    skeletonHeight: 2
+  })
+
+  return hexagons
+}
+
+/* =====================================================================
+ * PRESENTATION — SVG, HTML AND CSS
+ *
+ * The functions above generate the hexagons. Everything below only
+ * displays those results.
+ * ===================================================================== */
+
+const xDominatedHexagons = createXDominatedGrid()
+const yDominatedHexagons = createYDominatedGrid()
+
+const xDominatedSource = `function createXDominatedGrid() {
+  const hexDiameter = 120
+  const hexGrid = new HexGrid('x-dominated')
+
+  const hexagons = hexGrid.createGrid({
+    hexDiameter,
+    skeletonWidth: 2,
+    skeletonHeight: 2
+  })
+
+  return hexagons
+}`
+
+const yDominatedSource = `function createYDominatedGrid() {
+  const hexDiameter = 120
+  const hexGrid = new HexGrid('y-dominated')
+
+  const hexagons = hexGrid.createGrid({
+    hexDiameter,
+    skeletonWidth: 2,
+    skeletonHeight: 2
+  })
+
+  return hexagons
+}`
 
 const styles = `
 :root {
@@ -157,65 +288,62 @@ theory.className = 'sheet__minimal'
 theory.href = '/index.html'
 theory.textContent = 'Theory Demonstration'
 
-const hexDiameter = 120
-const skeletonWidth = 2
-const skeletonHeight = 2
-
 const headingSection = document.createElement('div')
 headingSection.append(heading, theory)
 
 sheet.append(
   headingSection,
-  createDemonstration('x-dominated'),
-  createDemonstration('y-dominated')
+  createDemonstration(
+    xDominatedHexagons,
+    'X-dominated Hex-grid',
+    'The following TypeScript code generates an X-dominated hexagonal grid using the Midgard Hex Grid library.',
+    xDominatedSource
+  ),
+  createDemonstration(
+    yDominatedHexagons,
+    'Y-dominated Hex-grid',
+    'The following TypeScript code generates a Y-dominated hexagonal grid using the Midgard Hex Grid library.',
+    yDominatedSource
+  )
 )
 page.append(sheet)
 document.body.prepend(page)
 
-function createDemonstration(orientation: 'x-dominated' | 'y-dominated') {
-  const label = orientation === 'x-dominated' ? 'X-dominated' : 'Y-dominated'
-  const article = orientation === 'x-dominated' ? 'an' : 'a'
-
+function createDemonstration(
+  hexagons: LayeredHexagon[],
+  title: string,
+  explanation: string,
+  source: string
+) {
   const section = document.createElement('section')
   section.className = 'grid'
 
   const figure = document.createElement('div')
   figure.className = 'grid__hex'
-  figure.append(createGrid(orientation))
+  figure.append(renderHexagons(hexagons))
 
-  const title = document.createElement('h2')
-  title.textContent = `${label} Hex-grid`
+  const heading = document.createElement('h2')
+  heading.textContent = title
 
-  const explanation = document.createElement('p')
-  explanation.textContent = `The following TypeScript code generates ${article} ${label} hexagonal grid using the Midgard Hex Grid library.`
+  const text = document.createElement('p')
+  text.textContent = explanation
 
   const code = document.createElement('code')
-  fillCode(code, libraryExample(orientation))
+  fillCode(code, source)
 
   const listing = document.createElement('pre')
   listing.append(code)
 
   const doc = document.createElement('div')
   doc.className = 'grid__doc'
-  doc.append(title, explanation, listing)
+  doc.append(heading, text, listing)
 
   section.append(figure, doc)
   return section
 }
 
-function libraryExample(orientation: 'x-dominated' | 'y-dominated') {
-  return `const hexDiameter = ${hexDiameter}
-const hexGrid = new HexGrid('${orientation}')
-
-const hexagons = hexGrid.createGrid({
-  hexDiameter,
-  skeletonWidth: ${skeletonWidth},
-  skeletonHeight: ${skeletonHeight}
-})`
-}
-
 function fillCode(code: HTMLElement, source: string) {
-  const pattern = /'(?:\\.|[^'])*'|\b(?:const|new)\b|\b\d+\b/g
+  const pattern = /'(?:\\.|[^'])*'|\b(?:const|function|new|return)\b|\b\d+\b/g
   let cursor = 0
 
   for (const match of source.matchAll(pattern)) {
@@ -238,22 +366,34 @@ function fillCode(code: HTMLElement, source: string) {
   if (cursor < source.length) code.append(source.slice(cursor))
 }
 
-function createGrid(orientation: 'x-dominated' | 'y-dominated') {
-  const hexGrid = new HexGrid(orientation)
-  const hexagons = hexGrid.createGrid({
-    hexDiameter,
-    skeletonWidth,
-    skeletonHeight
-  })
-  const bounds = hexGrid.getGridBounds(
-    hexagons.map((hexagon) => hexagon.coordinate),
-    hexDiameter
-  )
+function renderHexagons(hexagons: LayeredHexagon[]) {
+  const firstPoint = hexagons[0]?.points[0]
+
+  if (firstPoint === undefined) {
+    throw new Error('The generated grid did not contain a hexagon.')
+  }
+
+  let minX = firstPoint.x
+  let minY = firstPoint.y
+  let maxX = firstPoint.x
+  let maxY = firstPoint.y
+
+  for (const hexagon of hexagons) {
+    for (const point of hexagon.points) {
+      if (point.x < minX) minX = point.x
+      if (point.y < minY) minY = point.y
+      if (point.x > maxX) maxX = point.x
+      if (point.y > maxY) maxY = point.y
+    }
+  }
+
   const pad = 2
+  const width = maxX - minX + pad * 2
+  const height = maxY - minY + pad * 2
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-  svg.setAttribute('viewBox', `${bounds.minX - pad} ${bounds.minY - pad} ${bounds.width + pad * 2} ${bounds.height + pad * 2}`)
-  svg.setAttribute('width', String(bounds.width + pad * 2))
-  svg.setAttribute('height', String(bounds.height + pad * 2))
+  svg.setAttribute('viewBox', `${minX - pad} ${minY - pad} ${width} ${height}`)
+  svg.setAttribute('width', String(width))
+  svg.setAttribute('height', String(height))
 
   for (const hexagon of hexagons) {
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
