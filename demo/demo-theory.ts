@@ -2,17 +2,9 @@ import { CoordinateLayer, HexGrid } from '../src/index.ts'
 
 import type { Coordinate, Point } from '../src/index.ts'
 
-const theory = document.querySelector('#theory')
-const xSection = document.querySelector('#x-dominated')
-const ySection = document.querySelector('#y-dominated')
-
-if (
-  !(theory instanceof HTMLElement) ||
-  !(xSection instanceof HTMLElement) ||
-  !(ySection instanceof HTMLElement)
-) {
-  throw new Error('Demo sections are missing.')
-}
+const theory = requireHtmlElement(document, '#theory')
+const xSection = requireHtmlElement(document, '#x-dominated')
+const ySection = requireHtmlElement(document, '#y-dominated')
 
 // Both illustrations are authored at this cell size. The wider
 // Y-dominated row decides the one scale that makes them visible.
@@ -23,6 +15,16 @@ renderXDominated(xSection)
 renderYDominated(ySection)
 
 function renderTheory(_root: HTMLElement) {
+}
+
+function requireHtmlElement(scope: ParentNode, selector: string) {
+  const element = scope.querySelector(selector)
+
+  if (!(element instanceof HTMLElement)) {
+    throw new Error('Demo containers are missing.')
+  }
+
+  return element
 }
 
 function sharedDemonstrationScale() {
@@ -146,12 +148,8 @@ function renderXDominated(root: HTMLElement) {
     { x: 3, y: 5 }
   ]
 
-  const xdom = root.querySelector('#xdom')
-  const hexgrid = root.querySelector('#x-hexgrid')
-
-  if (xdom === null || hexgrid === null) {
-    throw new Error('Demo containers are missing.')
-  }
+  const xdom = requireHtmlElement(root, '#xdom')
+  const hexgrid = requireHtmlElement(root, '#x-hexgrid')
 
   drawXDom(xdom)
   drawHexGrid(hexgrid)
@@ -428,7 +426,7 @@ function renderXDominated(root: HTMLElement) {
     const mark = createSvgElement('g')
     mark.setAttribute('class', 'offset-mark')
     const scale = 14 / 24
-    const strokes = [
+    const strokes: ReadonlyArray<readonly [number, number, number, number]> = [
       [-17, -22, 12, 7],
       [9, -22, -17, 7]
     ]
@@ -742,12 +740,8 @@ function renderYDominated(root: HTMLElement) {
     { x: 5, y: 3 }
   ]
 
-  const ydom = root.querySelector('#ydom')
-  const hexgrid = root.querySelector('#y-hexgrid')
-
-  if (ydom === null || hexgrid === null) {
-    throw new Error('Demo containers are missing.')
-  }
+  const ydom = requireHtmlElement(root, '#ydom')
+  const hexgrid = requireHtmlElement(root, '#y-hexgrid')
 
   drawYDom(ydom)
   drawHexGrid(hexgrid)
@@ -1024,7 +1018,7 @@ function renderYDominated(root: HTMLElement) {
     const mark = createSvgElement('g')
     mark.setAttribute('class', 'offset-mark')
     const scale = 14 / 24
-    const strokes = [
+    const strokes: ReadonlyArray<readonly [number, number, number, number]> = [
       [-17, -22, 12, 7],
       [9, -22, -17, 7]
     ]
