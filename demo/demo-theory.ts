@@ -2,6 +2,172 @@ import { CoordinateLayer, HexGrid } from '../src/index.ts'
 
 import type { Coordinate, Point } from '../src/index.ts'
 
+const theoryStyles = `
+:root {
+  --page-navy: #0e1c2e;
+  --panel-parchment: #c7a47f;
+  --panel-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  --ink-strong: #2a1a0e;
+  --ink-body: #3d2918;
+  --ink-soft: #4a3120;
+  --rule-brown: #7a4e2d;
+
+  --fill-valid: #f4ead8;
+  --fill-edge: #909090;
+  --fill-mixed: #505050;
+  --fill-neighbour: #788d42;
+  --fill-center: #a9b965;
+  --fill-forbidden-cell: #e5a3a5;
+
+  --stroke-boundary: #8e2e2a;
+  --stroke-axis: #4a433a;
+  --stroke-neighbour-mark: #1b6840;
+  --stroke-overlay: #75c9f1;
+  --fill-movement: #102b20;
+  --fill-forbidden: #7a2020;
+  --stroke-forbidden: #ff2020;
+  --fill-center-mark: #ffe44d;
+  --label-marked: #d10f0f;
+  --stroke-offset-mark: #d52c36;
+
+  --label-origin: #fff1ea;
+  --label-near-origin: #1a120c;
+  --label-outer-pair: #a33b48;
+  --label-neighbour: #143f24;
+  --label-scattered: #7a2f68;
+  --label-far-corner: #ffe7a3;
+
+  --label-hex-axis: #4a5614;
+  --label-hex-diagonal: #1a4c84;
+  --label-hex-row: #143f24;
+}
+
+html {
+  font-size: 17px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--page-navy);
+  color: var(--ink-body);
+  font-family: Palatino, 'Palatino Linotype', 'Iowan Old Style', Georgia, serif;
+  line-height: 1.45;
+}
+
+.page {
+  padding: 32px 20px 48px;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 56px;
+  background: var(--panel-parchment);
+  box-shadow: var(--panel-shadow);
+}
+
+.sheet-section {
+  display: flow-root;
+  width: 100%;
+  margin: 0;
+}
+
+.sheet__intro {
+  margin-bottom: 36px;
+}
+
+#y-dominated {
+  padding-top: 36px;
+}
+
+h1 {
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.diagrams {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 32px;
+}
+
+.diagram {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+h2 {
+  width: 100%;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-brown);
+  color: var(--ink-strong);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.stage {
+  position: relative;
+  max-width: 100%;
+}
+
+.grid,
+.hexes {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.cell-label,
+.hex-label {
+  font-family: Palatino, 'Palatino Linotype', 'Iowan Old Style', Georgia, serif;
+  font-weight: 700;
+}
+
+@media (max-width: 980px) {
+  .sheet {
+    padding: 36px 22px 40px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .diagrams {
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+
+  .diagram {
+    width: min(100%, 640px);
+  }
+}
+`
+
+installTheoryStyles()
+
 const theory = requireHtmlElement(document, '#theory')
 const xSection = requireHtmlElement(document, '#x-dominated')
 const ySection = requireHtmlElement(document, '#y-dominated')
@@ -13,6 +179,17 @@ const sharedCellSize = 76
 renderTheory(theory)
 renderXDominated(xSection)
 renderYDominated(ySection)
+
+function installTheoryStyles() {
+  if (document.getElementById('midgard-theory-styles') !== null) {
+    return
+  }
+
+  const style = document.createElement('style')
+  style.id = 'midgard-theory-styles'
+  style.textContent = theoryStyles
+  document.head.append(style)
+}
 
 function renderTheory(_root: HTMLElement) {
 }
