@@ -99,6 +99,7 @@ export class HexGrid {
   private readonly orientation: GridOrientation
   private readonly neighbourCalculator: NeighbourCalculator
   private readonly coordinatePositioner: CoordinatePositioner
+  private readonly hexagonGeometry: HexagonGeometry
 
   /**
    * Creates a new Midgard hex grid.
@@ -111,6 +112,8 @@ export class HexGrid {
       new NeighbourCalculator(orientation)
     this.coordinatePositioner =
       new CoordinatePositioner(orientation)
+    this.hexagonGeometry =
+      new HexagonGeometry(orientation)
   }
 
   /**
@@ -261,10 +264,7 @@ export class HexGrid {
     center: Point,
     size: number
   ): Point[] {
-    const geometry =
-      new HexagonGeometry(this.orientation)
-
-    return geometry.getHexagonPoints(
+    return this.hexagonGeometry.getHexagonPoints(
       center,
       size
     )
