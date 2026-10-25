@@ -47,6 +47,44 @@ describe('HexGrid', () => {
 
       expect(height).toBeCloseTo(100)
     })
+
+    it('rejects invalid hexagon diameters', () => {
+      const grid = new HexGrid('x-dominated')
+
+      for (const hexDiameter of [
+        0,
+        -20,
+        NaN,
+        Infinity,
+        -Infinity
+      ]) {
+        expect(() =>
+          grid.createSingleHexagon({
+            hexDiameter
+          })
+        ).toThrow(RangeError)
+      }
+    })
+
+    it('accepts a positive decimal diameter', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const hexagon = grid.createSingleHexagon({
+        hexDiameter: 0.5
+      })
+
+      expect(hexagon.points).toHaveLength(6)
+
+      const xValues = hexagon.points.map(
+        (point) => point.x
+      )
+
+      const width =
+        Math.max(...xValues) -
+        Math.min(...xValues)
+
+      expect(width).toBeCloseTo(0.5)
+    })
   })
 
   describe('createGrid', () => {
@@ -109,6 +147,42 @@ describe('HexGrid', () => {
           zIndex: hexagon.zIndex
         }))
       ).toEqual(expectedCoordinates)
+
+      for (const hexagon of hexagons) {
+        expect(hexagon.points).toHaveLength(6)
+      }
+    })
+
+    it('rejects invalid hexagon diameters', () => {
+      const grid = new HexGrid('x-dominated')
+
+      for (const hexDiameter of [
+        0,
+        -20,
+        NaN,
+        Infinity,
+        -Infinity
+      ]) {
+        expect(() =>
+          grid.createGrid({
+            hexDiameter,
+            skeletonWidth: 2,
+            skeletonHeight: 2
+          })
+        ).toThrow(RangeError)
+      }
+    })
+
+    it('accepts a positive decimal diameter', () => {
+      const grid = new HexGrid('x-dominated')
+
+      const hexagons = grid.createGrid({
+        hexDiameter: 0.5,
+        skeletonWidth: 1,
+        skeletonHeight: 1
+      })
+
+      expect(hexagons).toHaveLength(7)
 
       for (const hexagon of hexagons) {
         expect(hexagon.points).toHaveLength(6)
@@ -316,12 +390,12 @@ describe('HexGrid', () => {
 
       expect(bounds.minY).toBeCloseTo(
         100 * Math.sqrt(3) -
-          100 / Math.sqrt(3)
+        100 / Math.sqrt(3)
       )
 
       expect(bounds.maxY).toBeCloseTo(
         100 * Math.sqrt(3) +
-          100 / Math.sqrt(3)
+        100 / Math.sqrt(3)
       )
 
       expect(bounds.height).toBeCloseTo(
@@ -348,12 +422,12 @@ describe('HexGrid', () => {
 
       expect(bounds.minX).toBeCloseTo(
         100 * Math.sqrt(3) -
-          100 / Math.sqrt(3)
+        100 / Math.sqrt(3)
       )
 
       expect(bounds.maxX).toBeCloseTo(
         100 * Math.sqrt(3) +
-          100 / Math.sqrt(3)
+        100 / Math.sqrt(3)
       )
 
       expect(bounds.width).toBeCloseTo(

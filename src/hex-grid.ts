@@ -152,10 +152,15 @@ export class HexGrid {
    *
    * @param options - The hexagon size and skeleton dimensions.
    * @returns All layered hexagons belonging to the complete grid.
+   * @throws RangeError If the hexagon diameter is invalid.
    */
   createGrid(
     options: HexGridOptions
   ): LayeredHexagon[] {
+    HexGridHexagonCreator.validateHexDiameter(
+      options.hexDiameter
+    )
+
     const coordinates =
       this.getLayeredCoordinateRange(
         {
