@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest'
+
 import { HexagonGeometry } from '../src/geometry.js'
 
 describe('HexagonGeometry', () => {
-  describe('getXDominatedHexagonPoints', () => {
+
+  describe('x-dominated geometry', () => {
+
     it('returns six corner points', () => {
       const center = {
         x: 100,
@@ -13,7 +16,7 @@ describe('HexagonGeometry', () => {
         new HexagonGeometry('x-dominated')
 
       const points =
-        geometry.getXDominatedHexagonPoints(center, 100)
+        geometry.getHexagonPoints(center, 100)
 
       expect(points).toHaveLength(6)
     })
@@ -28,7 +31,7 @@ describe('HexagonGeometry', () => {
         new HexagonGeometry('x-dominated')
 
       const points =
-        geometry.getXDominatedHexagonPoints(center, 100)
+        geometry.getHexagonPoints(center, 100)
 
       const upperRight = points[1]
       const upperLeft = points[5]
@@ -36,9 +39,11 @@ describe('HexagonGeometry', () => {
       expect(upperRight?.x).toBe(150)
       expect(upperLeft?.x).toBe(50)
     })
+
   })
 
-  describe('getYDominatedHexagonPoints', () => {
+  describe('y-dominated geometry', () => {
+
     it('returns six corner points', () => {
       const center = {
         x: 100,
@@ -49,7 +54,7 @@ describe('HexagonGeometry', () => {
         new HexagonGeometry('y-dominated')
 
       const points =
-        geometry.getYDominatedHexagonPoints(center, 100)
+        geometry.getHexagonPoints(center, 100)
 
       expect(points).toHaveLength(6)
     })
@@ -64,7 +69,7 @@ describe('HexagonGeometry', () => {
         new HexagonGeometry('y-dominated')
 
       const points =
-        geometry.getYDominatedHexagonPoints(center, 100)
+        geometry.getHexagonPoints(center, 100)
 
       const upperLeft = points[0]
       const lowerLeft = points[4]
@@ -72,9 +77,11 @@ describe('HexagonGeometry', () => {
       expect(upperLeft?.y).toBe(50)
       expect(lowerLeft?.y).toBe(150)
     })
+
   })
 
   describe('getHexagonPoints', () => {
+
     it('uses width for an x-dominated grid', () => {
       const center = {
         x: 100,
@@ -106,9 +113,11 @@ describe('HexagonGeometry', () => {
       expect(points[0]?.y).toBe(50)
       expect(points[4]?.y).toBe(150)
     })
+
   })
 
   describe('getBounds', () => {
+
     it('calculates the outer bounds of points', () => {
       const geometry =
         new HexagonGeometry('x-dominated')
@@ -147,5 +156,7 @@ describe('HexagonGeometry', () => {
         height: 0
       })
     })
+
   })
+
 })

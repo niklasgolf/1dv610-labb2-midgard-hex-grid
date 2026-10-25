@@ -55,7 +55,7 @@ export class HexagonGeometry {
    * @param width - The complete width of the hexagon.
    * @returns The six corner points of the hexagon.
    */
-  getXDominatedHexagonPoints(
+  private getXDominatedHexagonPoints(
     center: Point,
     width: number
   ): Point[] {
@@ -78,7 +78,7 @@ export class HexagonGeometry {
    * @param height - The complete height of the hexagon.
    * @returns The six corner points of the hexagon.
    */
-  getYDominatedHexagonPoints(
+  private getYDominatedHexagonPoints(
     center: Point,
     height: number
   ): Point[] {
