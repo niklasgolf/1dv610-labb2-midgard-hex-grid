@@ -101,6 +101,7 @@ export class HexGrid {
   private readonly coordinatePositioner: CoordinatePositioner
   private readonly hexagonGeometry: HexagonGeometry
   private readonly hexagonCreator: HexGridHexagonCreator
+  private readonly boundsCalculator: HexGridBoundsCalculator
 
   /**
    * Creates a new Midgard hex grid.
@@ -117,6 +118,11 @@ export class HexGrid {
       new HexagonGeometry(orientation)
     this.hexagonCreator =
       new HexGridHexagonCreator(
+        this.coordinatePositioner,
+        this.hexagonGeometry
+      )
+    this.boundsCalculator =
+      new HexGridBoundsCalculator(
         this.coordinatePositioner,
         this.hexagonGeometry
       )
@@ -295,10 +301,7 @@ export class HexGrid {
   ): Bounds {
     HexGridHexagonCreator.validateHexDiameter(size)
 
-    const boundsCalculator =
-      new HexGridBoundsCalculator(this.orientation)
-
-    return boundsCalculator.getGridBounds(
+    return this.boundsCalculator.getGridBounds(
       coordinates,
       size
     )
