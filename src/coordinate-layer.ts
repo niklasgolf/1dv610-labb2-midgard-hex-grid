@@ -18,7 +18,7 @@ export type LayeredCoordinate = {
  * for rendering.
  */
 export class CoordinateLayer {
-  private readonly coordinates: Coordinate[]
+  readonly #coordinates: Coordinate[]
 
   /**
    * Creates a new coordinate layer.
@@ -29,7 +29,7 @@ export class CoordinateLayer {
    * @param coordinates - The coordinates to sort and layer.
    */
   constructor(coordinates: Coordinate[]) {
-    this.coordinates = [...coordinates]
+    this.#coordinates = [...coordinates]
   }
 
   /**
@@ -41,8 +41,8 @@ export class CoordinateLayer {
    *
    * @returns A new array containing the sorted coordinates.
    */
-  private sortCoordinates(): Coordinate[] {
-    const sortedCoordinates = [...this.coordinates]
+  #sortCoordinates(): Coordinate[] {
+    const sortedCoordinates = [...this.#coordinates]
 
     sortedCoordinates.sort((firstCoordinate, secondCoordinate) => {
       if (firstCoordinate.y !== secondCoordinate.y) {
@@ -67,7 +67,7 @@ export class CoordinateLayer {
    * @returns Sorted coordinates with their calculated z-index.
    */
   getLayeredCoordinates(): LayeredCoordinate[] {
-    const sortedCoordinates = this.sortCoordinates()
+    const sortedCoordinates = this.#sortCoordinates()
     const layeredCoordinates: LayeredCoordinate[] = []
 
     let previousY: number | undefined
