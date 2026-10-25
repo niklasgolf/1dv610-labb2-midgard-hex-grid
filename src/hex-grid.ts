@@ -241,11 +241,14 @@ export class HexGrid {
    * @param coordinate - The Midgard coordinate to position.
    * @param size - The width or height of one hexagon.
    * @returns The calculated center point.
+   * @throws RangeError If the size is not positive and finite.
    */
   getCenterPosition(
     coordinate: Coordinate,
     size: number
   ): Point {
+    HexGridHexagonCreator.validateHexDiameter(size)
+
     return this.coordinatePositioner.getCenterPosition(
       coordinate,
       size
@@ -259,11 +262,14 @@ export class HexGrid {
    * @param center - The center point of the hexagon.
    * @param size - The dimension used to calculate the hexagon.
    * @returns The six corner points of the hexagon.
+   * @throws RangeError If the size is not positive and finite.
    */
   getHexagonPoints(
     center: Point,
     size: number
   ): Point[] {
+    HexGridHexagonCreator.validateHexDiameter(size)
+
     return this.hexagonGeometry.getHexagonPoints(
       center,
       size
@@ -281,11 +287,14 @@ export class HexGrid {
    * @param coordinates - The coordinates whose bounds should be calculated.
    * @param size - The width or height of one hexagon.
    * @returns The outer bounds of all hexagons.
+   * @throws RangeError If the size is not positive and finite.
    */
   getGridBounds(
     coordinates: Coordinate[],
     size: number
   ): Bounds {
+    HexGridHexagonCreator.validateHexDiameter(size)
+
     const boundsCalculator =
       new HexGridBoundsCalculator(this.orientation)
 

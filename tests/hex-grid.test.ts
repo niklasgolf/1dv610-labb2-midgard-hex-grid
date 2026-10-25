@@ -423,6 +423,44 @@ describe('HexGrid', () => {
     expect(result.y).toBeCloseTo(100)
   })
 
+  it('rejects invalid sizes when calculating center positions', () => {
+    const grid = new HexGrid('x-dominated')
+
+    for (const size of [
+      0,
+      -20,
+      NaN,
+      Infinity,
+      -Infinity
+    ]) {
+      expect(() =>
+        grid.getCenterPosition(
+          { x: 2, y: 2 },
+          size
+        )
+      ).toThrow(RangeError)
+    }
+  })
+
+  it('rejects invalid sizes when calculating hexagon points', () => {
+    const grid = new HexGrid('x-dominated')
+
+    for (const size of [
+      0,
+      -20,
+      NaN,
+      Infinity,
+      -Infinity
+    ]) {
+      expect(() =>
+        grid.getHexagonPoints(
+          { x: 100, y: 100 },
+          size
+        )
+      ).toThrow(RangeError)
+    }
+  })
+
   describe('getGridBounds', () => {
     it('calculates bounds for one x-dominated hexagon', () => {
       const grid = new HexGrid('x-dominated')
@@ -516,6 +554,25 @@ describe('HexGrid', () => {
       expect(bounds.height).toBeCloseTo(
         800 / Math.sqrt(3)
       )
+    })
+
+    it('rejects invalid sizes when calculating grid bounds', () => {
+      const grid = new HexGrid('x-dominated')
+
+      for (const size of [
+        0,
+        -20,
+        NaN,
+        Infinity,
+        -Infinity
+      ]) {
+        expect(() =>
+          grid.getGridBounds(
+            [{ x: 2, y: 2 }],
+            size
+          )
+        ).toThrow(RangeError)
+      }
     })
   })
 })
