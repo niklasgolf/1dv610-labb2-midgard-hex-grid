@@ -88,7 +88,10 @@ export class HexGridHexagonCreator {
     )
 
     return {
-      coordinate,
+      coordinate: {
+        x: coordinate.x,
+        y: coordinate.y
+      },
       center,
       points
     }

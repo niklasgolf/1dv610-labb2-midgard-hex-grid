@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { HexGrid } from '../src/hex-grid.js'
+import { HexGridHexagonCreator } from '../src/h-g-hexagon.js'
+import { CoordinatePositioner } from '../src/coordinate-positioner.js'
+import { HexagonGeometry } from '../src/geometry.js'
 
 describe('HexGrid', () => {
   describe('createSingleHexagon', () => {
@@ -150,6 +153,56 @@ describe('HexGrid', () => {
 
       for (const hexagon of hexagons) {
         expect(hexagon.points).toHaveLength(6)
+      }
+    })
+
+    it('copies coordinates without sharing references or extra properties', () => {
+      const positioner = new CoordinatePositioner('x-dominated')
+      const geometry = new HexagonGeometry('x-dominated')
+      const creator = new HexGridHexagonCreator(
+        positioner,
+        geometry
+      )
+
+      const coordinate = {
+        x: 2,
+        y: 2,
+        zIndex: 200
+      }
+
+      const hexagon = creator.createHexagon(
+        coordinate,
+        100
+      )
+
+      expect(hexagon.coordinate).toEqual({
+        x: 2,
+        y: 2
+      })
+
+      expect(hexagon.coordinate).not.toBe(coordinate)
+
+      coordinate.x = 10
+
+      expect(hexagon.coordinate).toEqual({
+        x: 2,
+        y: 2
+      })
+
+      const grid = new HexGrid('x-dominated')
+
+      const hexagons = grid.createGrid({
+        hexDiameter: 100,
+        skeletonWidth: 1,
+        skeletonHeight: 1
+      })
+
+      for (const layeredHexagon of hexagons) {
+        expect(Object.keys(layeredHexagon.coordinate)).toEqual([
+          'x',
+          'y'
+        ])
+        expect(layeredHexagon.zIndex).toBeGreaterThan(0)
       }
     })
 
