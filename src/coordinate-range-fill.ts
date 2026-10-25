@@ -20,6 +20,7 @@ import {
  */
 export class CoordinateRangeFiller {
   private readonly range: CoordinateRange
+  private readonly neighbourCalculator: NeighbourCalculator
 
   /**
    * Creates a new coordinate range filler.
@@ -28,6 +29,8 @@ export class CoordinateRangeFiller {
    */
   constructor(range: CoordinateRange) {
     this.range = range
+    this.neighbourCalculator =
+      new NeighbourCalculator(range.getOrientation())
   }
 
   /**
@@ -42,10 +45,9 @@ export class CoordinateRangeFiller {
   private getCoordinatesAround(
     coordinate: Coordinate
   ): Coordinate[] {
-    const neighbourCalculator =
-      new NeighbourCalculator(this.range.getOrientation())
-
-    return neighbourCalculator.getNeighbours(coordinate)
+    return this.neighbourCalculator.getNeighbours(
+      coordinate
+    )
   }
 
   /**
