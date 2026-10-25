@@ -33,7 +33,7 @@ export type Point = {
  * of a hexagon represents its width or height.
  */
 export class HexagonGeometry {
-  private readonly orientation: GridOrientation
+  readonly #orientation: GridOrientation
 
   /**
    * Creates a new hexagon geometry calculator.
@@ -41,7 +41,7 @@ export class HexagonGeometry {
    * @param orientation - The orientation of the hex grid.
    */
   constructor(orientation: GridOrientation) {
-    this.orientation = orientation
+    this.#orientation = orientation
   }
 
   /**
@@ -55,7 +55,7 @@ export class HexagonGeometry {
    * @param width - The complete width of the hexagon.
    * @returns The six corner points of the hexagon.
    */
-  private getXDominatedHexagonPoints(
+  #getXDominatedHexagonPoints(
     center: Point,
     width: number
   ): Point[] {
@@ -78,7 +78,7 @@ export class HexagonGeometry {
    * @param height - The complete height of the hexagon.
    * @returns The six corner points of the hexagon.
    */
-  private getYDominatedHexagonPoints(
+  #getYDominatedHexagonPoints(
     center: Point,
     height: number
   ): Point[] {
@@ -105,14 +105,14 @@ export class HexagonGeometry {
     center: Point,
     dimension: number
   ): Point[] {
-    if (this.orientation === 'x-dominated') {
-      return this.getXDominatedHexagonPoints(
+    if (this.#orientation === 'x-dominated') {
+      return this.#getXDominatedHexagonPoints(
         center,
         dimension
       )
     }
 
-    return this.getYDominatedHexagonPoints(
+    return this.#getYDominatedHexagonPoints(
       center,
       dimension
     )
