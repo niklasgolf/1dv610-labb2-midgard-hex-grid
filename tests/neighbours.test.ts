@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { NeighbourCalculator } from '../src/neighbours.js'
 
 describe('NeighbourCalculator', () => {
-  describe('getXDominatedNeighbours', () => {
+
+  describe('x-dominated neighbours', () => {
+
     it('returns six neighbours', () => {
       const coordinate = {
         x: 10,
@@ -13,7 +15,7 @@ describe('NeighbourCalculator', () => {
         new NeighbourCalculator('x-dominated')
 
       const neighbours =
-        calculator.getXDominatedNeighbours(coordinate)
+        calculator.getNeighbours(coordinate)
 
       expect(neighbours).toHaveLength(6)
     })
@@ -28,7 +30,7 @@ describe('NeighbourCalculator', () => {
         new NeighbourCalculator('x-dominated')
 
       const neighbours =
-        calculator.getXDominatedNeighbours(coordinate)
+        calculator.getNeighbours(coordinate)
 
       expect(neighbours).toEqual([
         { x: 8, y: 10 },
@@ -39,9 +41,11 @@ describe('NeighbourCalculator', () => {
         { x: 11, y: 11 }
       ])
     })
+
   })
 
-  describe('getYDominatedNeighbours', () => {
+  describe('y-dominated neighbours', () => {
+
     it('returns six neighbours', () => {
       const coordinate = {
         x: 10,
@@ -52,7 +56,7 @@ describe('NeighbourCalculator', () => {
         new NeighbourCalculator('y-dominated')
 
       const neighbours =
-        calculator.getYDominatedNeighbours(coordinate)
+        calculator.getNeighbours(coordinate)
 
       expect(neighbours).toHaveLength(6)
     })
@@ -67,7 +71,7 @@ describe('NeighbourCalculator', () => {
         new NeighbourCalculator('y-dominated')
 
       const neighbours =
-        calculator.getYDominatedNeighbours(coordinate)
+        calculator.getNeighbours(coordinate)
 
       expect(neighbours).toEqual([
         { x: 10, y: 8 },
@@ -78,9 +82,11 @@ describe('NeighbourCalculator', () => {
         { x: 11, y: 11 }
       ])
     })
+
   })
 
   describe('getNeighbours', () => {
+
     it('uses x-dominated neighbour calculation', () => {
       const coordinate = {
         x: 10,
@@ -124,5 +130,7 @@ describe('NeighbourCalculator', () => {
         { x: 11, y: 11 }
       ])
     })
+
   })
+
 })

@@ -29,7 +29,7 @@ export class NeighbourCalculator {
    * @param coordinate - The coordinate whose neighbours should be found.
    * @returns The six neighbouring coordinates.
    */
-  getXDominatedNeighbours(
+  private getXDominatedNeighbours(
     coordinate: Coordinate
   ): Coordinate[] {
     const left: Coordinate = {
@@ -82,7 +82,7 @@ export class NeighbourCalculator {
    * @param coordinate - The coordinate whose neighbours should be found.
    * @returns The six neighbouring coordinates.
    */
-  getYDominatedNeighbours(
+  private getYDominatedNeighbours(
     coordinate: Coordinate
   ): Coordinate[] {
     const upper: Coordinate = {
