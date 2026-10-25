@@ -66,7 +66,7 @@ export class CoordinatePositioner {
    * @param width - The complete width of one hexagon.
    * @returns The calculated center point.
    */
-  public getXDominatedCenterPosition(
+  private getXDominatedCenterPosition(
     coordinate: Coordinate,
     width: number
   ): Point {
@@ -93,7 +93,7 @@ export class CoordinatePositioner {
    * @param height - The complete height of one hexagon.
    * @returns The calculated center point.
    */
-  public getYDominatedCenterPosition(
+  private getYDominatedCenterPosition(
     coordinate: Coordinate,
     height: number
   ): Point {

@@ -6,18 +6,17 @@ import {
 
 describe('CoordinatePositioner', () => {
 
-  describe('getXDominatedCenterPosition', () => {
+  describe('x-dominated positioning', () => {
 
     it('positions the origin at zero', () => {
 
       const positioner =
         new CoordinatePositioner('x-dominated')
 
-      const position =
-        positioner.getXDominatedCenterPosition(
-          { x: 0, y: 0 },
-          100
-        )
+      const position = positioner.getCenterPosition(
+        { x: 0, y: 0 },
+        100
+      )
 
       expect(position.x).toBe(0)
       expect(position.y).toBe(0)
@@ -29,11 +28,10 @@ describe('CoordinatePositioner', () => {
       const positioner =
         new CoordinatePositioner('x-dominated')
 
-      const position =
-        positioner.getXDominatedCenterPosition(
-          { x: 2, y: 2 },
-          100
-        )
+      const position = positioner.getCenterPosition(
+        { x: 2, y: 2 },
+        100
+      )
 
       expect(position.x).toBe(100)
 
@@ -45,18 +43,17 @@ describe('CoordinatePositioner', () => {
 
   })
 
-  describe('getYDominatedCenterPosition', () => {
+  describe('y-dominated positioning', () => {
 
     it('positions the origin at zero', () => {
 
       const positioner =
         new CoordinatePositioner('y-dominated')
 
-      const position =
-        positioner.getYDominatedCenterPosition(
-          { x: 0, y: 0 },
-          100
-        )
+      const position = positioner.getCenterPosition(
+        { x: 0, y: 0 },
+        100
+      )
 
       expect(position.x).toBe(0)
       expect(position.y).toBe(0)
@@ -68,11 +65,10 @@ describe('CoordinatePositioner', () => {
       const positioner =
         new CoordinatePositioner('y-dominated')
 
-      const position =
-        positioner.getYDominatedCenterPosition(
-          { x: 2, y: 2 },
-          100
-        )
+      const position = positioner.getCenterPosition(
+        { x: 2, y: 2 },
+        100
+      )
 
       expect(position.x).toBeCloseTo(
         100 * Math.sqrt(3)
@@ -91,11 +87,10 @@ describe('CoordinatePositioner', () => {
       const positioner =
         new CoordinatePositioner('x-dominated')
 
-      const position =
-        positioner.getCenterPosition(
-          { x: 2, y: 2 },
-          100
-        )
+      const position = positioner.getCenterPosition(
+        { x: 2, y: 2 },
+        100
+      )
 
       expect(position.x).toBe(100)
 
@@ -110,11 +105,10 @@ describe('CoordinatePositioner', () => {
       const positioner =
         new CoordinatePositioner('y-dominated')
 
-      const position =
-        positioner.getCenterPosition(
-          { x: 2, y: 2 },
-          100
-        )
+      const position = positioner.getCenterPosition(
+        { x: 2, y: 2 },
+        100
+      )
 
       expect(position.x).toBeCloseTo(
         100 * Math.sqrt(3)
