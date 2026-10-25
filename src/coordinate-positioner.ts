@@ -12,7 +12,7 @@ import type { GridOrientation } from './orientation.js'
  */
 export class CoordinatePositioner {
 
-  private readonly orientation: GridOrientation
+  readonly #orientation: GridOrientation
 
   /**
    * Creates a new coordinate positioner.
@@ -21,7 +21,7 @@ export class CoordinatePositioner {
    */
   constructor(orientation: GridOrientation) {
 
-    this.orientation = orientation
+    this.#orientation = orientation
 
   }
 
@@ -43,16 +43,16 @@ export class CoordinatePositioner {
     dimension: number
   ): Point {
 
-    if (this.orientation === 'x-dominated') {
+    if (this.#orientation === 'x-dominated') {
 
-      return this.getXDominatedCenterPosition(
+      return this.#getXDominatedCenterPosition(
         coordinate,
         dimension
       )
 
     }
 
-    return this.getYDominatedCenterPosition(
+    return this.#getYDominatedCenterPosition(
       coordinate,
       dimension
     )
@@ -66,7 +66,7 @@ export class CoordinatePositioner {
    * @param width - The complete width of one hexagon.
    * @returns The calculated center point.
    */
-  private getXDominatedCenterPosition(
+  #getXDominatedCenterPosition(
     coordinate: Coordinate,
     width: number
   ): Point {
@@ -93,7 +93,7 @@ export class CoordinatePositioner {
    * @param height - The complete height of one hexagon.
    * @returns The calculated center point.
    */
-  private getYDominatedCenterPosition(
+  #getYDominatedCenterPosition(
     coordinate: Coordinate,
     height: number
   ): Point {
