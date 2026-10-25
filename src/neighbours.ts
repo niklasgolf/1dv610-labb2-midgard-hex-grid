@@ -8,7 +8,7 @@ import type { GridOrientation } from './orientation.js'
  * between neighbouring coordinates is horizontal or vertical.
  */
 export class NeighbourCalculator {
-  private readonly orientation: GridOrientation
+  readonly #orientation: GridOrientation
 
   /**
    * Creates a new neighbour calculator.
@@ -16,7 +16,7 @@ export class NeighbourCalculator {
    * @param orientation - The orientation of the hex grid.
    */
   constructor(orientation: GridOrientation) {
-    this.orientation = orientation
+    this.#orientation = orientation
   }
 
   /**
@@ -29,7 +29,7 @@ export class NeighbourCalculator {
    * @param coordinate - The coordinate whose neighbours should be found.
    * @returns The six neighbouring coordinates.
    */
-  private getXDominatedNeighbours(
+  #getXDominatedNeighbours(
     coordinate: Coordinate
   ): Coordinate[] {
     const left: Coordinate = {
@@ -82,7 +82,7 @@ export class NeighbourCalculator {
    * @param coordinate - The coordinate whose neighbours should be found.
    * @returns The six neighbouring coordinates.
    */
-  private getYDominatedNeighbours(
+  #getYDominatedNeighbours(
     coordinate: Coordinate
   ): Coordinate[] {
     const upper: Coordinate = {
@@ -135,10 +135,10 @@ export class NeighbourCalculator {
   getNeighbours(
     coordinate: Coordinate
   ): Coordinate[] {
-    if (this.orientation === 'x-dominated') {
-      return this.getXDominatedNeighbours(coordinate)
+    if (this.#orientation === 'x-dominated') {
+      return this.#getXDominatedNeighbours(coordinate)
     }
 
-    return this.getYDominatedNeighbours(coordinate)
+    return this.#getYDominatedNeighbours(coordinate)
   }
 }
