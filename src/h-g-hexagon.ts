@@ -1,7 +1,5 @@
 import type { Coordinate } from './coordinate.js'
 
-import type { GridOrientation } from './orientation.js'
-
 import type { Point } from './geometry.js'
 
 import { CoordinatePositioner } from './coordinate-positioner.js'
@@ -21,19 +19,26 @@ export type CreatedHexagon = {
 /**
  * Creates complete hexagons from Midgard coordinates.
  *
- * The grid orientation determines how the center position
- * and hexagon geometry are calculated.
+ * The injected positioner and geometry determine how
+ * the center position and hexagon points are calculated.
  */
 export class HexGridHexagonCreator {
-  private readonly orientation: GridOrientation
+  private readonly positioner: CoordinatePositioner
+  private readonly geometry: HexagonGeometry
 
   /**
-   * Creates a new hexagon creator.
+   * Creates a new hexagon creator using existing
+   * geometric helper objects.
    *
-   * @param orientation - The orientation of the hex grid.
+   * @param positioner - Calculates hexagon center positions.
+   * @param geometry - Calculates hexagon corner points.
    */
-  constructor(orientation: GridOrientation) {
-    this.orientation = orientation
+  constructor(
+    positioner: CoordinatePositioner,
+    geometry: HexagonGeometry
+  ) {
+    this.positioner = positioner
+    this.geometry = geometry
   }
 
   /**
@@ -72,18 +77,12 @@ export class HexGridHexagonCreator {
   ): CreatedHexagon {
     HexGridHexagonCreator.validateHexDiameter(hexDiameter)
 
-    const positioner =
-      new CoordinatePositioner(this.orientation)
-
-    const center = positioner.getCenterPosition(
+    const center = this.positioner.getCenterPosition(
       coordinate,
       hexDiameter
     )
 
-    const geometry =
-      new HexagonGeometry(this.orientation)
-
-    const points = geometry.getHexagonPoints(
+    const points = this.geometry.getHexagonPoints(
       center,
       hexDiameter
     )

@@ -116,7 +116,10 @@ export class HexGrid {
     this.hexagonGeometry =
       new HexagonGeometry(orientation)
     this.hexagonCreator =
-      new HexGridHexagonCreator(orientation)
+      new HexGridHexagonCreator(
+        this.coordinatePositioner,
+        this.hexagonGeometry
+      )
   }
 
   /**
