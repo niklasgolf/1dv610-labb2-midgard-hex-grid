@@ -104,6 +104,38 @@ h1 {
   text-underline-offset: 0.2em;
 }
 
+.principle {
+  max-width: 820px;
+  margin: 36px auto;
+}
+
+.principle h2 {
+  margin: 0 0 16px;
+  padding: 0;
+  border: 0;
+  color: var(--ink-strong);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.principle p {
+  margin: 0 0 16px;
+  color: var(--ink-body);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.principle p:last-child {
+  margin-bottom: 0;
+}
+
+.principle strong {
+  color: var(--ink-strong);
+  font-weight: 700;
+}
+
 .diagrams {
   display: flex;
   align-items: flex-start;
@@ -246,7 +278,7 @@ function createTheorySection() {
   header.className = 'sheet__intro'
 
   const heading = document.createElement('h1')
-  heading.textContent = 'Midgard Hex Grid'
+  heading.textContent = 'Midgard Hex Grid Theory Demonstration'
 
   const minimal = document.createElement('a')
   minimal.className = 'sheet__minimal'
@@ -254,8 +286,56 @@ function createTheorySection() {
   minimal.textContent = 'Minimal Demonstration'
 
   header.append(heading, minimal)
-  section.append(header)
+  section.append(header, createPrincipleSection())
   return section
+}
+
+function createPrincipleSection() {
+  const section = document.createElement('section')
+  section.className = 'principle'
+
+  const heading = document.createElement('h2')
+  heading.textContent = '⬡ The Parity Principle & Grid Orientation'
+
+  const parity = document.createElement('p')
+  parity.append(
+    'Midgard Hex Grid is built on a simple mathematical principle called ',
+    strong('coordinate parity'),
+    '. Every valid hexagon coordinate consists of two numbers that are either both even or both odd. The even coordinates, such as (2,2), (4,2), (2,4), and (4,4), form the underlying ',
+    strong('skeleton grid'),
+    ', while the odd coordinates, such as (3,3), (1,3), and (3,5), identify the surrounding hexagons that complete the grid. Mixed coordinates, such as (3,4) or (2,5), are never valid because their numbers have different parity.'
+  )
+
+  const foundation = document.createElement('p')
+  foundation.append(
+    strong('The foundation of every grid is the skeleton hexagon at coordinate (2,2).'),
+    ' This is always the top-left skeleton hexagon and the fixed starting point from which the skeleton grid is constructed. Regardless of the grid\'s dimensions or orientation, the skeleton begins at (2,2). For example, when skeletonWidth: 1 and skeletonHeight: 1, the skeleton consists of exactly one hexagon: (2,2). Increasing the skeleton width or height extends the skeleton from this fixed origin, using even coordinates such as (4,2), (2,4), and (4,4). This makes (2,2) the permanent anchor of the Midgard coordinate system.'
+  )
+
+  const orientation = document.createElement('p')
+  orientation.append(
+    'The library supports two orientations: ',
+    strong('X-dominated'),
+    ' and ',
+    strong('Y-dominated'),
+    '. X-dominated grids use hexagons with pointed tops and bottoms, while Y-dominated grids use hexagons with flat tops and bottoms. Both orientations follow exactly the same parity rules and coordinate system; only the geometric arrangement changes. This means that a hexagon at coordinate (2,2) retains its logical identity regardless of orientation.'
+  )
+
+  const separation = document.createElement('p')
+  separation.append(
+    'By separating ',
+    strong('logical coordinates from visual geometry'),
+    ', Midgard Hex Grid provides a consistent foundation for creating, positioning, and navigating hexagonal grids in either orientation.'
+  )
+
+  section.append(heading, parity, foundation, orientation, separation)
+  return section
+}
+
+function strong(text: string) {
+  const element = document.createElement('strong')
+  element.textContent = text
+  return element
 }
 
 function createDemonstrationSection(

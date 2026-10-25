@@ -190,6 +190,36 @@ h1 {
   text-underline-offset: 0.2em;
 }
 
+.principle {
+  max-width: 820px;
+  margin: 36px auto;
+}
+
+.principle h2 {
+  margin: 0 0 16px;
+  color: var(--ink-strong);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.principle p {
+  margin: 0 0 16px;
+  color: var(--ink-body);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.principle p:last-child {
+  margin-bottom: 0;
+}
+
+.principle strong {
+  color: var(--ink-strong);
+  font-weight: 700;
+}
+
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -208,6 +238,27 @@ h1 {
   stroke: #2a1a0e;
   stroke-width: 2;
   stroke-linejoin: round;
+}
+
+.grid polygon.skeleton {
+  fill: #d6f0f5;
+}
+
+.skeleton-label {
+  fill: #10283f;
+  font-family: Palatino, 'Palatino Linotype', 'Iowan Old Style', Georgia, serif;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.skeleton-label__name {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.skeleton-label__coordinate {
+  font-size: 23px;
+  font-weight: 700;
 }
 
 .grid__doc h2 {
@@ -281,7 +332,7 @@ const sheet = document.createElement('article')
 sheet.className = 'sheet'
 
 const heading = document.createElement('h1')
-heading.textContent = 'Midgard Hex Grid'
+heading.textContent = 'Midgard Hex Grid Minimal Demonstration'
 
 const theory = document.createElement('a')
 theory.className = 'sheet__minimal'
@@ -293,6 +344,7 @@ headingSection.append(heading, theory)
 
 sheet.append(
   headingSection,
+  createPrincipleSection(),
   createDemonstration(
     xDominatedHexagons,
     'X-dominated Hex-grid',
@@ -308,6 +360,54 @@ sheet.append(
 )
 page.append(sheet)
 document.body.prepend(page)
+
+function createPrincipleSection() {
+  const section = document.createElement('section')
+  section.className = 'principle'
+
+  const heading = document.createElement('h2')
+  heading.textContent = '⬡ The Parity Principle & Grid Orientation'
+
+  const parity = document.createElement('p')
+  parity.append(
+    'Midgard Hex Grid is built on a simple mathematical principle called ',
+    strong('coordinate parity'),
+    '. Every valid hexagon coordinate consists of two numbers that are either both even or both odd. The even coordinates, such as (2,2), (4,2), (2,4), and (4,4), form the underlying ',
+    strong('skeleton grid'),
+    ', while the odd coordinates, such as (3,3), (1,3), and (3,5), identify the surrounding hexagons that complete the grid. Mixed coordinates, such as (3,4) or (2,5), are never valid because their numbers have different parity.'
+  )
+
+  const foundation = document.createElement('p')
+  foundation.append(
+    strong('The foundation of every grid is the skeleton hexagon at coordinate (2,2).'),
+    ' This is always the top-left skeleton hexagon and the fixed starting point from which the skeleton grid is constructed. Regardless of the grid\'s dimensions or orientation, the skeleton begins at (2,2). For example, when skeletonWidth: 1 and skeletonHeight: 1, the skeleton consists of exactly one hexagon: (2,2). Increasing the skeleton width or height extends the skeleton from this fixed origin, using even coordinates such as (4,2), (2,4), and (4,4). This makes (2,2) the permanent anchor of the Midgard coordinate system.'
+  )
+
+  const orientation = document.createElement('p')
+  orientation.append(
+    'The library supports two orientations: ',
+    strong('X-dominated'),
+    ' and ',
+    strong('Y-dominated'),
+    '. X-dominated grids use hexagons with pointed tops and bottoms, while Y-dominated grids use hexagons with flat tops and bottoms. Both orientations follow exactly the same parity rules and coordinate system; only the geometric arrangement changes. This means that a hexagon at coordinate (2,2) retains its logical identity regardless of orientation.'
+  )
+
+  const separation = document.createElement('p')
+  separation.append(
+    'By separating ',
+    strong('logical coordinates from visual geometry'),
+    ', Midgard Hex Grid provides a consistent foundation for creating, positioning, and navigating hexagonal grids in either orientation.'
+  )
+
+  section.append(heading, parity, foundation, orientation, separation)
+  return section
+}
+
+function strong(text: string) {
+  const element = document.createElement('strong')
+  element.textContent = text
+  return element
+}
 
 function createDemonstration(
   hexagons: LayeredHexagon[],
@@ -366,6 +466,14 @@ function fillCode(code: HTMLElement, source: string) {
   if (cursor < source.length) code.append(source.slice(cursor))
 }
 
+function isSkeletonHexagon(hexagon: LayeredHexagon) {
+  const { x, y } = hexagon.coordinate
+  return (x === 2 && y === 2)
+    || (x === 4 && y === 2)
+    || (x === 2 && y === 4)
+    || (x === 4 && y === 4)
+}
+
 function renderHexagons(hexagons: LayeredHexagon[]) {
   const firstPoint = hexagons[0]?.points[0]
 
@@ -398,8 +506,26 @@ function renderHexagons(hexagons: LayeredHexagon[]) {
   for (const hexagon of hexagons) {
     const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
     polygon.setAttribute('points', hexagon.points.map((point) => `${point.x},${point.y}`).join(' '))
+    if (isSkeletonHexagon(hexagon)) polygon.classList.add('skeleton')
     svg.append(polygon)
   }
 
+  for (const hexagon of hexagons) {
+    if (!isSkeletonHexagon(hexagon)) continue
+    svg.append(
+      skeletonText(hexagon.center.x, hexagon.center.y - 12, 'skeleton-label skeleton-label__name', 'skeleton hex'),
+      skeletonText(hexagon.center.x, hexagon.center.y + 12, 'skeleton-label skeleton-label__coordinate', `${hexagon.coordinate.x},${hexagon.coordinate.y}`)
+    )
+  }
+
   return svg
+}
+
+function skeletonText(x: number, y: number, className: string, value: string) {
+  const text = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+  text.setAttribute('x', String(x))
+  text.setAttribute('y', String(y))
+  text.setAttribute('class', className)
+  text.textContent = value
+  return text
 }
