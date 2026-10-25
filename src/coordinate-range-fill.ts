@@ -39,7 +39,7 @@ export class CoordinateRangeFiller {
    * @param coordinate - The skeleton coordinate.
    * @returns The six neighbouring coordinates.
    */
-  getCoordinatesAround(
+  private getCoordinatesAround(
     coordinate: Coordinate
   ): Coordinate[] {
     const neighbourCalculator =
@@ -56,7 +56,7 @@ export class CoordinateRangeFiller {
    * @param coordinate - The coordinate to look for.
    * @returns True if the coordinate already exists.
    */
-  containsCoordinate(
+  private containsCoordinate(
     coordinates: Coordinate[],
     coordinate: Coordinate
   ): boolean {

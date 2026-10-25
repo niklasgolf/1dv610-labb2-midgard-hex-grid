@@ -7,7 +7,9 @@ import {
 } from '../src/coordinate-range-fill.js'
 
 describe('CoordinateRangeFiller', () => {
-  describe('getCoordinatesAround', () => {
+
+  describe('surrounding coordinates', () => {
+
     it('returns the six surrounding coordinates for an x-dominated grid', () => {
       const range = new CoordinateRange({
         width: 1,
@@ -17,12 +19,11 @@ describe('CoordinateRangeFiller', () => {
 
       const filler = new CoordinateRangeFiller(range)
 
-      const result = filler.getCoordinatesAround({
-        x: 2,
-        y: 2
+      const result = filler.getCoordinateRange({
+        fillAround: true
       })
 
-      expect(result).toEqual([
+      expect(result.slice(1)).toEqual([
         { x: 0, y: 2 },
         { x: 4, y: 2 },
         { x: 1, y: 1 },
@@ -41,12 +42,11 @@ describe('CoordinateRangeFiller', () => {
 
       const filler = new CoordinateRangeFiller(range)
 
-      const result = filler.getCoordinatesAround({
-        x: 2,
-        y: 2
+      const result = filler.getCoordinateRange({
+        fillAround: true
       })
 
-      expect(result).toEqual([
+      expect(result.slice(1)).toEqual([
         { x: 2, y: 0 },
         { x: 2, y: 4 },
         { x: 1, y: 1 },
@@ -55,9 +55,11 @@ describe('CoordinateRangeFiller', () => {
         { x: 3, y: 3 }
       ])
     })
+
   })
 
   describe('getCoordinateRange', () => {
+
     it('returns only the skeleton for a 1 by 1 range without fillAround', () => {
       const range = new CoordinateRange({
         width: 1,
@@ -155,5 +157,7 @@ describe('CoordinateRangeFiller', () => {
 
       expect(result).toHaveLength(12)
     })
+
   })
+
 })
