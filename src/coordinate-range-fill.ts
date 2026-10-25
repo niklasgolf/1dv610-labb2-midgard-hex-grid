@@ -43,7 +43,7 @@ export class CoordinateRangeFiller {
     coordinate: Coordinate
   ): Coordinate[] {
     const neighbourCalculator =
-      new NeighbourCalculator(this.range.orientation)
+      new NeighbourCalculator(this.range.getOrientation())
 
     return neighbourCalculator.getNeighbours(coordinate)
   }

@@ -26,53 +26,51 @@ describe('CoordinateRange', () => {
 
       expect(result).toBe(true)
     })
+  })
 
-    it('returns false when width is not an integer', () => {
-      const range = new CoordinateRange({
+  describe('constructor validation', () => {
+    it('throws RangeError when width is not an integer', () => {
+      expect(() => new CoordinateRange({
         width: 1.5,
         height: 1,
         orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
+      })).toThrow(RangeError)
     })
 
-    it('returns false when height is not an integer', () => {
-      const range = new CoordinateRange({
+    it('throws RangeError when height is not an integer', () => {
+      expect(() => new CoordinateRange({
         width: 1,
         height: 1.5,
         orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
+      })).toThrow(RangeError)
     })
 
-    it('returns false when width is less than 1', () => {
-      const range = new CoordinateRange({
+    it('throws RangeError when width is less than 1', () => {
+      expect(() => new CoordinateRange({
         width: 0,
         height: 1,
         orientation: 'x-dominated'
-      })
-
-      const result = range.isValid()
-
-      expect(result).toBe(false)
+      })).toThrow(RangeError)
     })
 
-    it('returns false when height is less than 1', () => {
-      const range = new CoordinateRange({
+    it('throws RangeError when height is less than 1', () => {
+      expect(() => new CoordinateRange({
         width: 1,
         height: 0,
         orientation: 'x-dominated'
+      })).toThrow(RangeError)
+    })
+  })
+
+  describe('getOrientation', () => {
+    it('returns the orientation configured at construction', () => {
+      const range = new CoordinateRange({
+        width: 1,
+        height: 1,
+        orientation: 'y-dominated'
       })
 
-      const result = range.isValid()
-
-      expect(result).toBe(false)
+      expect(range.getOrientation()).toBe('y-dominated')
     })
   })
 

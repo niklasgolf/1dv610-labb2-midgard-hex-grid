@@ -34,22 +34,33 @@ export type CoordinateRangeOptions = {
  * Represents a rectangular skeleton of a Midgard hex grid area.
  *
  * Every skeleton starts at Midgard coordinate (2, 2).
- * The user only chooses the width and height of the skeleton.
+ * The dimensions and orientation cannot change after construction.
  */
 export class CoordinateRange {
 
-  readonly width: number
+  private readonly width: number
 
-  readonly height: number
+  private readonly height: number
 
-  readonly orientation: GridOrientation
+  private readonly orientation: GridOrientation
 
   /**
    * Creates a new Midgard coordinate range.
    *
+   * Invalid dimensions are rejected before the object is created.
+   *
    * @param config - The values describing the coordinate range.
+   * @throws RangeError If width or height is not a positive integer.
    */
   constructor(config: CoordinateRangeConfig) {
+
+    const validator = new CoordinateRangeValidator()
+
+    if (!validator.isValid(config.width, config.height)) {
+      throw new RangeError(
+        'Coordinate range width and height must be positive integers.'
+      )
+    }
 
     this.width = config.width
 
@@ -60,12 +71,25 @@ export class CoordinateRange {
   }
 
   /**
+   * Returns the orientation of this coordinate range.
+   *
+   * The orientation is fixed during construction.
+   *
+   * @returns The coordinate range orientation.
+   */
+  getOrientation(): GridOrientation {
+
+    return this.orientation
+
+  }
+
+  /**
    * Checks whether this coordinate range has valid dimensions.
    *
-   * Width and height describe numbers of skeleton hexagons.
-   * Both values must therefore be positive integers.
+   * The constructor guarantees valid dimensions.
+   * This method is retained for compatibility.
    *
-   * @returns True if this coordinate range is valid.
+   * @returns True for every successfully constructed range.
    */
   isValid(): boolean {
 
