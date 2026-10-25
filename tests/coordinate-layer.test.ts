@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { CoordinateLayer } from '../src/coordinate-layer.js'
 
 describe('CoordinateLayer', () => {
-  describe('sortCoordinates', () => {
+
+  describe('coordinate sorting', () => {
+
     it('sorts coordinates by y first and x second', () => {
       const coordinates = [
         { x: 4, y: 2 },
@@ -14,9 +16,9 @@ describe('CoordinateLayer', () => {
 
       const coordinateLayer = new CoordinateLayer(coordinates)
 
-      const result = coordinateLayer.sortCoordinates()
+      const result = coordinateLayer.getLayeredCoordinates()
 
-      expect(result).toEqual([
+      expect(result.map(({ x, y }) => ({ x, y }))).toEqual([
         { x: 2, y: 0 },
         { x: 1, y: 1 },
         { x: 3, y: 1 },
@@ -33,16 +35,18 @@ describe('CoordinateLayer', () => {
 
       const coordinateLayer = new CoordinateLayer(coordinates)
 
-      coordinateLayer.sortCoordinates()
+      coordinateLayer.getLayeredCoordinates()
 
       expect(coordinates).toEqual([
         { x: 4, y: 2 },
         { x: 2, y: 0 }
       ])
     })
+
   })
 
   describe('getLayeredCoordinates', () => {
+
     it('assigns the same z-index to coordinates on the same y row', () => {
       const coordinates = [
         { x: 4, y: 2 },
@@ -84,5 +88,7 @@ describe('CoordinateLayer', () => {
         { x: 2, y: 6, zIndex: 400 }
       ])
     })
+
   })
+
 })

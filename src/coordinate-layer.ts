@@ -41,7 +41,7 @@ export class CoordinateLayer {
    *
    * @returns A new array containing the sorted coordinates.
    */
-  sortCoordinates(): Coordinate[] {
+  private sortCoordinates(): Coordinate[] {
     const sortedCoordinates = [...this.coordinates]
 
     sortedCoordinates.sort((firstCoordinate, secondCoordinate) => {
