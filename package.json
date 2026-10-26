@@ -1,6 +1,6 @@
 {
   "name": "midgard-hex-grid",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A reusable TypeScript module for working with hexagonal grids.",
   "type": "module",
   "main": "./dist/index.js",
