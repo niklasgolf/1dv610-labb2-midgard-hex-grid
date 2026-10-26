@@ -14,8 +14,8 @@ import { CoordinatePositioner } from './coordinate-positioner.js'
  * of hexagons in a Midgard grid.
  */
 export class HexGridBoundsCalculator {
-  private readonly positioner: CoordinatePositioner
-  private readonly geometry: HexagonGeometry
+  readonly #positioner: CoordinatePositioner
+  readonly #geometry: HexagonGeometry
 
   /**
    * Creates a new grid bounds calculator using existing
@@ -28,8 +28,8 @@ export class HexGridBoundsCalculator {
     positioner: CoordinatePositioner,
     geometry: HexagonGeometry
   ) {
-    this.positioner = positioner
-    this.geometry = geometry
+    this.#positioner = positioner
+    this.#geometry = geometry
   }
 
   /**
@@ -47,13 +47,13 @@ export class HexGridBoundsCalculator {
     const points: Point[] = []
 
     for (const coordinate of coordinates) {
-      const center = this.positioner.getCenterPosition(
+      const center = this.#positioner.getCenterPosition(
         coordinate,
         size
       )
 
       const hexagonPoints =
-        this.geometry.getHexagonPoints(
+        this.#geometry.getHexagonPoints(
           center,
           size
         )
@@ -61,6 +61,6 @@ export class HexGridBoundsCalculator {
       points.push(...hexagonPoints)
     }
 
-    return this.geometry.getBounds(points)
+    return this.#geometry.getBounds(points)
   }
 }
