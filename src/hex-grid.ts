@@ -96,12 +96,12 @@ export type LayeredHexagon = Hexagon & {
  * Represents a Midgard hex grid with a specific orientation.
  */
 export class HexGrid {
-  private readonly orientation: GridOrientation
-  private readonly neighbourCalculator: NeighbourCalculator
-  private readonly coordinatePositioner: CoordinatePositioner
-  private readonly hexagonGeometry: HexagonGeometry
-  private readonly hexagonCreator: HexGridHexagonCreator
-  private readonly boundsCalculator: HexGridBoundsCalculator
+  readonly #orientation: GridOrientation
+  readonly #neighbourCalculator: NeighbourCalculator
+  readonly #coordinatePositioner: CoordinatePositioner
+  readonly #hexagonGeometry: HexagonGeometry
+  readonly #hexagonCreator: HexGridHexagonCreator
+  readonly #boundsCalculator: HexGridBoundsCalculator
 
   /**
    * Creates a new Midgard hex grid.
@@ -109,22 +109,22 @@ export class HexGrid {
    * @param orientation - The orientation of the hex grid.
    */
   constructor(orientation: GridOrientation) {
-    this.orientation = orientation
-    this.neighbourCalculator =
+    this.#orientation = orientation
+    this.#neighbourCalculator =
       new NeighbourCalculator(orientation)
-    this.coordinatePositioner =
+    this.#coordinatePositioner =
       new CoordinatePositioner(orientation)
-    this.hexagonGeometry =
+    this.#hexagonGeometry =
       new HexagonGeometry(orientation)
-    this.hexagonCreator =
+    this.#hexagonCreator =
       new HexGridHexagonCreator(
-        this.coordinatePositioner,
-        this.hexagonGeometry
+        this.#coordinatePositioner,
+        this.#hexagonGeometry
       )
-    this.boundsCalculator =
+    this.#boundsCalculator =
       new HexGridBoundsCalculator(
-        this.coordinatePositioner,
-        this.hexagonGeometry
+        this.#coordinatePositioner,
+        this.#hexagonGeometry
       )
   }
 
@@ -155,7 +155,7 @@ export class HexGrid {
       )
     }
 
-    return this.hexagonCreator.createHexagon(
+    return this.#hexagonCreator.createHexagon(
       coordinate,
       options.hexDiameter
     )
@@ -191,7 +191,7 @@ export class HexGrid {
       )
 
     return coordinates.map((coordinate) => {
-      const hexagon = this.hexagonCreator.createHexagon(
+      const hexagon = this.#hexagonCreator.createHexagon(
         coordinate,
         options.hexDiameter
       )
@@ -213,7 +213,7 @@ export class HexGrid {
   getNeighbours(
     coordinate: Coordinate
   ): Coordinate[] {
-    return this.neighbourCalculator.getNeighbours(
+    return this.#neighbourCalculator.getNeighbours(
       coordinate
     )
   }
@@ -255,7 +255,7 @@ export class HexGrid {
   ): Point {
     HexGridHexagonCreator.validateHexDiameter(size)
 
-    return this.coordinatePositioner.getCenterPosition(
+    return this.#coordinatePositioner.getCenterPosition(
       coordinate,
       size
     )
@@ -276,7 +276,7 @@ export class HexGrid {
   ): Point[] {
     HexGridHexagonCreator.validateHexDiameter(size)
 
-    return this.hexagonGeometry.getHexagonPoints(
+    return this.#hexagonGeometry.getHexagonPoints(
       center,
       size
     )
@@ -301,7 +301,7 @@ export class HexGrid {
   ): Bounds {
     HexGridHexagonCreator.validateHexDiameter(size)
 
-    return this.boundsCalculator.getGridBounds(
+    return this.#boundsCalculator.getGridBounds(
       coordinates,
       size
     )
@@ -321,7 +321,7 @@ export class HexGrid {
   ): Coordinate[] {
     const coordinateRange = new CoordinateRange({
       ...range,
-      orientation: this.orientation
+      orientation: this.#orientation
     })
 
     const coordinateRangeFiller =
