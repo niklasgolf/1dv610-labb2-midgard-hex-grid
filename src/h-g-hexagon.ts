@@ -23,8 +23,8 @@ export type CreatedHexagon = {
  * the center position and hexagon points are calculated.
  */
 export class HexGridHexagonCreator {
-  private readonly positioner: CoordinatePositioner
-  private readonly geometry: HexagonGeometry
+  readonly #positioner: CoordinatePositioner
+  readonly #geometry: HexagonGeometry
 
   /**
    * Creates a new hexagon creator using existing
@@ -37,8 +37,8 @@ export class HexGridHexagonCreator {
     positioner: CoordinatePositioner,
     geometry: HexagonGeometry
   ) {
-    this.positioner = positioner
-    this.geometry = geometry
+    this.#positioner = positioner
+    this.#geometry = geometry
   }
 
   /**
@@ -77,12 +77,12 @@ export class HexGridHexagonCreator {
   ): CreatedHexagon {
     HexGridHexagonCreator.validateHexDiameter(hexDiameter)
 
-    const center = this.positioner.getCenterPosition(
+    const center = this.#positioner.getCenterPosition(
       coordinate,
       hexDiameter
     )
 
-    const points = this.geometry.getHexagonPoints(
+    const points = this.#geometry.getHexagonPoints(
       center,
       hexDiameter
     )
