@@ -19,8 +19,8 @@ import {
  * around every skeleton coordinate are also included.
  */
 export class CoordinateRangeFiller {
-  private readonly range: CoordinateRange
-  private readonly neighbourCalculator: NeighbourCalculator
+  readonly #range: CoordinateRange
+  readonly #neighbourCalculator: NeighbourCalculator
 
   /**
    * Creates a new coordinate range filler.
@@ -28,8 +28,8 @@ export class CoordinateRangeFiller {
    * @param range - The coordinate range to fill.
    */
   constructor(range: CoordinateRange) {
-    this.range = range
-    this.neighbourCalculator =
+    this.#range = range
+    this.#neighbourCalculator =
       new NeighbourCalculator(range.getOrientation())
   }
 
@@ -42,10 +42,10 @@ export class CoordinateRangeFiller {
    * @param coordinate - The skeleton coordinate.
    * @returns The six neighbouring coordinates.
    */
-  private getCoordinatesAround(
+  #getCoordinatesAround(
     coordinate: Coordinate
   ): Coordinate[] {
-    return this.neighbourCalculator.getNeighbours(
+    return this.#neighbourCalculator.getNeighbours(
       coordinate
     )
   }
@@ -58,7 +58,7 @@ export class CoordinateRangeFiller {
    * @param coordinate - The coordinate to look for.
    * @returns True if the coordinate already exists.
    */
-  private containsCoordinate(
+  #containsCoordinate(
     coordinates: Coordinate[],
     coordinate: Coordinate
   ): boolean {
@@ -90,9 +90,9 @@ export class CoordinateRangeFiller {
   getCoordinateRange(
     options: CoordinateRangeOptions = {}
   ): Coordinate[] {
-    const skeleton = this.range.getSkeleton()
+    const skeleton = this.#range.getSkeleton()
 
-    if (!this.range.shouldFillAround(options)) {
+    if (!this.#range.shouldFillAround(options)) {
       return skeleton
     }
 
@@ -100,11 +100,11 @@ export class CoordinateRangeFiller {
 
     for (const skeletonCoordinate of skeleton) {
       const surroundingCoordinates =
-        this.getCoordinatesAround(skeletonCoordinate)
+        this.#getCoordinatesAround(skeletonCoordinate)
 
       for (const surroundingCoordinate of surroundingCoordinates) {
         if (
-          !this.containsCoordinate(
+          !this.#containsCoordinate(
             coordinates,
             surroundingCoordinate
           )
