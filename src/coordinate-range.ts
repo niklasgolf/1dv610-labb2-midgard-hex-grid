@@ -38,11 +38,11 @@ export type CoordinateRangeOptions = {
  */
 export class CoordinateRange {
 
-  private readonly width: number
+  readonly #width: number
 
-  private readonly height: number
+  readonly #height: number
 
-  private readonly orientation: GridOrientation
+  readonly #orientation: GridOrientation
 
   /**
    * Creates a new Midgard coordinate range.
@@ -62,11 +62,11 @@ export class CoordinateRange {
       )
     }
 
-    this.width = config.width
+    this.#width = config.width
 
-    this.height = config.height
+    this.#height = config.height
 
-    this.orientation = config.orientation
+    this.#orientation = config.orientation
 
   }
 
@@ -79,7 +79,7 @@ export class CoordinateRange {
    */
   getOrientation(): GridOrientation {
 
-    return this.orientation
+    return this.#orientation
 
   }
 
@@ -96,8 +96,8 @@ export class CoordinateRange {
     const validator = new CoordinateRangeValidator()
 
     return validator.isValid(
-      this.width,
-      this.height
+      this.#width,
+      this.#height
     )
 
   }
@@ -115,8 +115,8 @@ export class CoordinateRange {
     const skeleton = new CoordinateRangeSkeleton()
 
     return skeleton.create(
-      this.width,
-      this.height
+      this.#width,
+      this.#height
     )
 
   }
@@ -138,8 +138,8 @@ export class CoordinateRange {
     const fillAround = new CoordinateRangeFillAround()
 
     return fillAround.shouldFillAround(
-      this.width,
-      this.height,
+      this.#width,
+      this.#height,
       options.fillAround
     )
 
